@@ -1,0 +1,31 @@
+.books h1 {
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.book {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #777;
+}
+
+.book h2 {
+    margin-bottom: 0.3rem;
+}
+
+.book img {
+    width: 20rem;
+    height: 30rem;
+}
+
+.book a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.book p {
+    margin-bottom: 0.5rem;
+}
