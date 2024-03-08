@@ -1,18 +1,33 @@
 import Navbar from './components/Navbar';
-
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import './App.css'
 
-function App() {
+const App = () => {
+  const [loginState, setLoginState] = useState({
+    isLoggedIn: false,
+    isAdmin: false,
+  });
+
   return (
-    <div className='App'>
-      <Navbar />
+    <div className="App">
+      <EventBusNavbar loginState={loginState} setLoginState={setLoginState} />
       <div className="container">
-        <Outlet />
+        <Outlet context={[loginState, setLoginState]} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+const EventBusNavbar = ({ loginState, setLoginState }) => {
+  const eventBus = new EventTarget();
+
+  return (
+    <>
+      <Navbar loginState={loginState} setLoginState={setLoginState} eventBus={eventBus} />
+    </>
+  );
+};
+
+export default App;

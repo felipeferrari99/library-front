@@ -6,6 +6,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom"
 
 import Home from './routes/Home.jsx'
+import Login from './routes/Login.jsx'
 import Books from './routes/Books.jsx'
 import NewBook from './routes/NewBook.jsx'
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "/login",
+        element: <Login />
       },
       {
         path: "/books",
