@@ -1,24 +1,30 @@
-.books h1 {
+.divBooks h1 {
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    margin-bottom: 3.5rem;
+}
+
+.books {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .book {
-    display: flex;
-    flex-direction: column;
+    flex-basis: calc(33.33% - 1rem);
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #777;
 }
 
 .book h2 {
     margin-bottom: 0.3rem;
+    text-align: center;
 }
 
 .book img {
-    width: 20rem;
-    height: 30rem;
+    width: 100%;
+    height: auto;
 }
 
 .book a {
@@ -28,4 +34,5 @@
 
 .book p {
     margin-bottom: 0.5rem;
+    text-align: center;
 }

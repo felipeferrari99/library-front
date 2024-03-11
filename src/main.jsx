@@ -9,6 +9,8 @@ import Home from './routes/Home.jsx'
 import Login from './routes/Login.jsx'
 import Books from './routes/Books.jsx'
 import NewBook from './routes/NewBook.jsx'
+import ViewBook from './routes/ViewBook.jsx'
+import EditBook from './routes/EditBook.jsx'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/newBook",
         element: <NewBook />
+      },
+      {
+        path: "/books/:id",
+        element: <ViewBook />
+      },
+      {
+        path: "/books/:id/edit",
+        element: <EditBook />
       }
     ]
   }
