@@ -48,7 +48,7 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
             {isAdmin && (
               <>
                 <li><Link to="/books">Books</Link></li>
-                <li><Link to="/users">Users</Link></li>
+                <li><Link to="/newBook">New Book</Link></li>
               </>
             )}
             <li><button onClick={logout}>Logout</button></li>
