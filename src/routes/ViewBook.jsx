@@ -42,7 +42,7 @@ export default function ViewBook() {
     <div>
         {book === null ? (<p>Loading...</p>) : (
             <div>
-                <img src={book.book.image} alt={book.title}/>
+                <img style={{width: '15rem', height: '20rem'}} src={book.book.image} alt={book.title}/>
                 <h1>{book.book.title}</h1>
                 <h2>{book.book.authorName}</h2>
                 <p>{book.book.description}</p>
@@ -52,7 +52,9 @@ export default function ViewBook() {
             <button>Edit Book</button>
         </Link>
         <button onClick={() => deleteBook(id)}>Delete Book</button>
-        <a href="/books">All Books</a>
+        <Link to={'/books/'}>
+            <a>All Books</a>
+        </Link>
     </div>    
   )
 }

@@ -1,6 +1,7 @@
 import libraryFetch from '../axios/config';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 import './Login.css'
 
@@ -21,7 +22,7 @@ const NewBook = () => {
     formData.append('author', author);
     formData.append('image', image);
     formData.append('description', description);
-    formData.append('release_date', releaseDate);
+    formData.append('release_date', moment(releaseDate).format('YYYY-MM-DD'));
     formData.append('qty_available', qtyAvailable);
   
     try {
@@ -59,7 +60,7 @@ const NewBook = () => {
             </div>
             <div className="formControl">
                 <label htmlFor='releaseDate'>Release Date</label>
-                <input name='releaseDate' type="text" id="releaseDate" onChange={(e) => setReleaseDate(e.target.value)} />
+                <input name='releaseDate' type="date" id="releaseDate" onChange={(e) => setReleaseDate(e.target.value)} />
             </div>
             <div className="formControl">
                 <label htmlFor='qtyAvailable'>Quantity Available</label>
