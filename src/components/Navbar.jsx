@@ -36,6 +36,22 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setIsLoggedIn(true);
+        setIsAdmin(decodedToken.type === 'admin');
+      } catch (err) {
+        logout();
+      }
+    } else {
+      setIsLoggedIn(false);
+      setIsAdmin(false);
+    }
+  }, [setLoginState]);
+
   return (
     <nav className='navbar'>
         <h2>
