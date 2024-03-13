@@ -63,8 +63,8 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
             <li><Link to="/rents">Rents</Link></li>
             {isAdmin && (
               <>
-                <li><Link to="/books">Books</Link></li>
                 <li><Link to="/newBook">New Book</Link></li>
+                <li><Link to="/newAuthor">New Author</Link></li>
               </>
             )}
             <li><button onClick={logout}>Logout</button></li>

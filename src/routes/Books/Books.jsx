@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../axios/config";
+import libraryFetch from "../../axios/config";
 import { Link } from "react-router-dom";
 
 import './Books.css';
@@ -31,7 +31,9 @@ export default function Books() {
               <Link to={`/books/${book.id}`}>
                 <h2>{book.title}</h2>
               </Link>
-              <p>{book.authorName}</p>
+              <Link to={`/authors/${book.author}`}>
+                <p>{book.authorName}</p>
+              </Link>
               <Link to={`/books/${book.id}`}>
                 <img src={book.image}/>
               </Link>

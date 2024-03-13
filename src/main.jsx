@@ -6,12 +6,18 @@ import './index.css'
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom"
 
 import Home from './routes/Home.jsx'
-import Login from './routes/Login.jsx'
-import Books from './routes/Books.jsx'
-import NewBook from './routes/NewBook.jsx'
-import ViewBook from './routes/ViewBook.jsx'
-import EditBook from './routes/EditBook.jsx'
-import ChangeImage from './routes/ChangeImage.jsx'
+import Login from './routes/Users/Login.jsx'
+import Books from './routes/Books/Books.jsx'
+import NewBook from './routes/Books/NewBook.jsx'
+import ViewBook from './routes/Books/ViewBook.jsx'
+import EditBook from './routes/Books/EditBook.jsx'
+import ChangeBookImage from './routes/Books/ChangeBookImage.jsx'
+import ViewAuthor from './routes/Authors/ViewAuthor.jsx'
+import Authors from './routes/Authors/Authors.jsx'
+import ChangeAuthorImage from './routes/Authors/ChangeAuthorImage.jsx'
+import EditAuthor from './routes/Authors/EditAuthor.jsx'
+import Register from './routes/Users/Register.jsx'
+import NewAuthor from './routes/Authors/NewAuthor.jsx'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path: "/register",
+        element: <Register />
       },
       {
         path: "/books",
@@ -43,8 +53,28 @@ const router = createBrowserRouter([
       },
       {
         path: "/books/:id/image",
-        element: <ChangeImage />
-      }
+        element: <ChangeBookImage />
+      },
+      {
+        path: "/authors/:id",
+        element: <ViewAuthor />
+      },
+      {
+        path: "/newAuthor",
+        element: <NewAuthor />
+      },
+      {
+        path: "/authors",
+        element: <Authors />
+      },
+      {
+        path: "/authors/:id/image",
+        element: <ChangeAuthorImage />
+      },
+      {
+        path: "/authors/:id/edit",
+        element: <EditAuthor />
+      },
     ]
   }
 ])

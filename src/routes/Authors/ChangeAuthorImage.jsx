@@ -1,55 +1,55 @@
-import libraryFetch from '../axios/config';
+import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-import './Login.css'
+import '../Users/Login.css'
 
-const ChangeImage = () => {
-  const [book, setBook] = useState(null);
+const ChangeAuthorImage = () => {
+  const [author, setAuthor] = useState(null);
   const { id } = useParams();
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBookData = async () => {
+    const fetchAuthorData = async () => {
       try {
-        const response = await libraryFetch.get(`/books/${id}`)
-        setBook(response.data.book);
+        const response = await libraryFetch.get(`/authors/${id}`)
+        setAuthor(response.data.author[0]);
       } catch (error) {
-        console.error('Error fetching book data:', error);
+        console.error('Error fetching author data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBookData();
+    fetchAuthorData();
   }, [id]);
 
   useEffect(() => {
-    if (book) {
-      setTitle(book.title);
+    if (author) {
+      setName(author.name);
       setImage(null); 
     }
-  }, [book]);
+  }, [author]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('title', title);
+    formData.append('name', name);
     formData.append('image', image);
 
     try {
       const token = localStorage.getItem('token');
-      await libraryFetch.put(`/books/${id}/image`, formData, {
+      await libraryFetch.put(`/authors/${id}/image`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate(`/books/${id}`);
+      navigate(`/authors/${id}`);
     } catch (error) {
-      console.error('Error during book update:', error);
+      console.error('Error during author update:', error);
     }
   };
 
@@ -59,19 +59,19 @@ const ChangeImage = () => {
 
   return (
     <div className="login">
-        <h2>Current image for: {book.title}</h2>
-        <img style={{width: '15rem', height: '20rem'}} src={book.image} alt={book.title}/>
+        <h2>Current image for: {author.name}</h2>
+        <img style={{width: '15rem', height: '15rem'}} src={author.image} alt={author.name}/>
         <form onSubmit={handleSubmit}>
             <div className="formControl">
               <input type="file" onChange={(e) => setImage(e.target.files[0])} />
             </div>
             <input type="submit" value="Change Image" className="btn" />
         </form>
-        <Link to={`/books/${id}`}>
+        <Link to={`/authors/${id}`}>
             <p>Cancel</p>
         </Link>
     </div>
   )
 }
 
-export default ChangeImage;
+export default ChangeAuthorImage;
