@@ -51,6 +51,9 @@ export default function ViewBook() {
         <Link to={`/books/${id}/edit`}>
             <button>Edit Book</button>
         </Link>
+        <Link to={`/books/${id}/image`}>
+            <button>Change Image</button>
+        </Link>
         <button onClick={() => deleteBook(id)}>Delete Book</button>
         <Link to={'/books/'}>
             <a>All Books</a>

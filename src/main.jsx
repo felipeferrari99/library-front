@@ -11,6 +11,7 @@ import Books from './routes/Books.jsx'
 import NewBook from './routes/NewBook.jsx'
 import ViewBook from './routes/ViewBook.jsx'
 import EditBook from './routes/EditBook.jsx'
+import ChangeImage from './routes/ChangeImage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/books/:id/edit",
         element: <EditBook />
+      },
+      {
+        path: "/books/:id/image",
+        element: <ChangeImage />
       }
     ]
   }

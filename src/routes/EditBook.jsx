@@ -10,7 +10,6 @@ const EditBook = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
-  const [image, setImage] = useState(null);
   const [qtyAvailable, setQtyAvailable] = useState('');
   const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
@@ -36,8 +35,7 @@ const EditBook = () => {
     if (book) {
       setTitle(book.title);
       setReleaseDate(book.release_date || '');
-      setImage(null); 
-      setQtyAvailable(book.qty_available.toString());
+      setQtyAvailable(book.qty_available);
       setAuthor(book.authorName);
       setDescription(book.description);
     }
@@ -45,22 +43,19 @@ const EditBook = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('author', author);
-    formData.append('image', image);
-    formData.append('description', description);
-    formData.append('release_date', moment(releaseDate).format('YYYY-MM-DD'));
-    formData.append('qty_available', qtyAvailable);
-
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.put(`/books/${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate(`/books/${id}`);
+        const token = localStorage.getItem('token');
+        const response = await libraryFetch.put(`/books/${id}`, {
+          title: title,
+          author: author,
+          description: description,
+          release_date: moment(releaseDate).format('YYYY-MM-DD'),
+          qty_available: qtyAvailable
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }});
+        navigate(`/books/${id}`);
     } catch (error) {
       console.error('Error during book update:', error);
     }
@@ -81,10 +76,6 @@ const EditBook = () => {
             <div className="formControl">
                 <label htmlFor='author'>Author Name</label>
                 <input name='author' type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
-            </div>
-            <div className="formControl">
-              <label htmlFor="image">Add Image</label>
-              <input type="file" onChange={(e) => setImage(e.target.files[0])} />
             </div>
             <div className="formControl">
                 <label htmlFor='description'>Description</label>
