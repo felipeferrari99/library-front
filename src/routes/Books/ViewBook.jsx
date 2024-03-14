@@ -5,11 +5,17 @@ import moment from 'moment';
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
+  const [type, setType] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
 
   const getBook = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setType(decodedToken.type)
+      }
       const response = await libraryFetch.get(`/books/${id}`)
       const data = response.data
       setBook(data);
@@ -36,9 +42,6 @@ export default function ViewBook() {
     getBook();
   }, [id]);
 
-  useEffect(() => {
-  }, [book]);
-
   return (
     <div>
         {book === null ? (<p>Loading...</p>) : (
@@ -52,13 +55,17 @@ export default function ViewBook() {
                 <p>Released: {moment(book.book.release_date).format('DD/MM/YYYY')}</p>
             </div>
         )}
-        <Link to={`/books/${id}/edit`}>
-            <button>Edit Book</button>
-        </Link>
-        <Link to={`/books/${id}/image`}>
-            <button>Change Image</button>
-        </Link>
-        <button onClick={() => deleteBook(id)}>Delete Book</button>
+        {type == 'admin' && (
+          <>
+          <Link to={`/books/${id}/edit`}>
+              <button>Edit Book</button>
+          </Link>
+          <Link to={`/books/${id}/image`}>
+              <button>Change Image</button>
+          </Link>
+          <button onClick={() => deleteBook(id)}>Delete Book</button>
+          </>
+        )}
         <Link to={'/books'}>
             <a>All Books</a>
         </Link>

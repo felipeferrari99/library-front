@@ -5,11 +5,17 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 export default function ViewAuthor() {
   const [author, setAuthor] = useState(null);
   const [books, setBooks] = useState(null);
+  const [type, setType] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
 
   const getAuthor = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setType(decodedToken.type)
+      }
       const response = await libraryFetch.get(`/authors/${id}`)
       const data = response.data
       setAuthor(data.author[0]);
@@ -37,9 +43,6 @@ export default function ViewAuthor() {
     getAuthor();
   }, [id]);
 
-  useEffect(() => {
-  }, [author]);
-
   return (
     <div>
         {author === null ? (<p>Loading...</p>) : (
@@ -50,20 +53,23 @@ export default function ViewAuthor() {
                 <h2>Books:</h2>
                 {books.map((book) => ( 
                     <div className="book" key={book.id}>
-                    <Link to={`/books/${book.id}`}>
-                        <h3>{book.title}</h3>
-                        <img style={{width: '10rem', height: '15rem'}} src={book.image}/>
-                    </Link>
-                    
+                      <Link to={`/books/${book.id}`}>
+                          <h3>{book.title}</h3>
+                          <img style={{width: '10rem', height: '15rem'}} src={book.image}/>
+                      </Link>
                     </div>
                 ))}
-                <Link to={`/authors/${id}/edit`}>
-                    <button>Edit Author</button>
-                </Link>
-                <Link to={`/authors/${id}/image`}>
-                    <button>Change Image</button>
-                </Link>
-                <button onClick={() => deleteAuthor(id)}>Delete Author</button>
+                {type == 'admin' && (
+                  <>
+                    <Link to={`/authors/${id}/edit`}>
+                      <button>Edit Author</button>
+                    </Link>
+                    <Link to={`/authors/${id}/image`}>
+                        <button>Change Image</button>
+                    </Link>
+                    <button onClick={() => deleteAuthor(id)}>Delete Author</button>
+                  </>
+                )}
                 <Link to={'/authors'}>
                     <a>Other Authors</a>
                 </Link>

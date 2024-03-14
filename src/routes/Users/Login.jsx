@@ -25,8 +25,7 @@ const Login = () => {
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
 
-      setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin' });
-
+      setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId });
       navigate('/books');
     } catch (error) {
       console.error('Error during login:', error);

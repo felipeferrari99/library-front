@@ -18,6 +18,9 @@ import ChangeAuthorImage from './routes/Authors/ChangeAuthorImage.jsx'
 import EditAuthor from './routes/Authors/EditAuthor.jsx'
 import Register from './routes/Users/Register.jsx'
 import NewAuthor from './routes/Authors/NewAuthor.jsx'
+import User from './routes/Users/User.jsx'
+import EditUser from './routes/Users/EditUser.jsx'
+import ChangeUserImage from './routes/Users/ChangeUserImage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -74,6 +77,18 @@ const router = createBrowserRouter([
       {
         path: "/authors/:id/edit",
         element: <EditAuthor />
+      },
+      {
+        path: "/user/:id",
+        element: <User />
+      },
+      {
+        path: "/user/:id/edit",
+        element: <EditUser />
+      },
+      {
+        path: "/user/:id/image",
+        element: <ChangeUserImage />
       },
     ]
   }

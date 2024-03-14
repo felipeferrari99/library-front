@@ -9,11 +9,15 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(loginState.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(loginState.isAdmin);
+  const [image, setImage] = useState(loginState.image);
+  const [id, setId] = useState(loginState.id);
 
   const logout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     setIsAdmin(false);
+    setImage('');
+    setId('');
     setLoginState({ isLoggedIn: false, isAdmin: false });
     navigate('/');
   };
@@ -21,9 +25,11 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
   useEffect(() => {
     setIsLoggedIn(loginState.isLoggedIn);
     setIsAdmin(loginState.isAdmin);
+    setId(loginState.id)
+    setImage(loginState.image)
   }, [loginState]);
 
-  useEffect(() => {
+  useEffect(() => {  
     const handleLoginEvent = (event) => {
       setIsLoggedIn(event.detail.isLoggedIn);
       setIsAdmin(event.detail.isAdmin);
@@ -43,6 +49,8 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setIsLoggedIn(true);
         setIsAdmin(decodedToken.type === 'admin');
+        setId(decodedToken.userId);
+        setImage(decodedToken.image);
       } catch (err) {
         logout();
       }
@@ -69,6 +77,9 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
             )}
             <li><button onClick={logout}>Logout</button></li>
           </ul>
+          <Link to={`/user/${id}`}>
+            <img style={{width: '3rem', height: '3rem'}} src={image}/>
+          </Link>
         </>
       ) : (
         <ul>
