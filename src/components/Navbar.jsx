@@ -65,28 +65,37 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
         <h2>
             <Link to={'/'}>Library</Link>
         </h2>
-      {isLoggedIn ? (
-        <>
-          <ul>
-            <li><Link to="/rents">Rents</Link></li>
-            {isAdmin && (
+        {isAdmin && (
               <>
+              <ul>
+                <li><Link to="/allRents">All Rents</Link></li>
                 <li><Link to="/newBook">New Book</Link></li>
                 <li><Link to="/newAuthor">New Author</Link></li>
+                <li><button onClick={logout}>Logout</button></li>
+              </ul>
+                <Link to={`/user/${id}`}>
+                  <img style={{width: '3rem', height: '3rem', borderRadius: '50%'}} src={image}/>
+                </Link>
               </>
-            )}
-            <li><button onClick={logout}>Logout</button></li>
-          </ul>
-          <Link to={`/user/${id}`}>
-            <img style={{width: '3rem', height: '3rem', borderRadius: '50%'}} src={image}/>
-          </Link>
-        </>
-      ) : (
-        <ul>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/register">Register</Link></li>
-        </ul>
-      )}
+        )}
+        {isLoggedIn && !isAdmin && (
+              <>
+              <ul>
+                <li><Link to="/available">New Rent</Link></li>
+                <li><Link to="/myRents">My Rents</Link></li>
+                <li><button onClick={logout}>Logout</button></li>
+              </ul>
+                <Link to={`/user/${id}`}>
+                  <img style={{width: '3rem', height: '3rem', borderRadius: '50%'}} src={image}/>
+                </Link>
+              </>
+        )}
+        {!isLoggedIn && (
+              <ul>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/register">Register</Link></li>
+              </ul>
+        )}
     </nav>
   );
 };

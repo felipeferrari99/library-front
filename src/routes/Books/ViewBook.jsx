@@ -54,7 +54,8 @@ export default function ViewBook() {
                 <p>{book.book.description}</p>
                 <p>Released: {moment(book.book.release_date).format('DD/MM/YYYY')}</p>
             </div>
-        )}
+        )
+        }
         {type == 'admin' && (
           <>
           <Link to={`/books/${id}/edit`}>
@@ -65,6 +66,11 @@ export default function ViewBook() {
           </Link>
           <button onClick={() => deleteBook(id)}>Delete Book</button>
           </>
+        )}
+        {book != null && type == 'user' && book.book.qty_available > 0 && (
+            <Link to={`/newRent/${id}`}>
+              <button>Rent Book</button>
+            </Link>
         )}
         <Link to={'/books'}>
             <a>All Books</a>

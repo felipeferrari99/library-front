@@ -21,6 +21,10 @@ import NewAuthor from './routes/Authors/NewAuthor.jsx'
 import User from './routes/Users/User.jsx'
 import EditUser from './routes/Users/EditUser.jsx'
 import ChangeUserImage from './routes/Users/ChangeUserImage.jsx'
+import Available from './routes/Rents/Available.jsx'
+import NewRent from './routes/Rents/NewRent.jsx'
+import AllRents from './routes/Rents/AllRents.jsx'
+import MyRents from './routes/Rents/MyRents.jsx'
 
 const router = createBrowserRouter([
   {
@@ -90,6 +94,22 @@ const router = createBrowserRouter([
         path: "/user/:id/image",
         element: <ChangeUserImage />
       },
+      {
+        path: "/available",
+        element: <Available />
+      },
+      {
+        path: "/newRent/:id",
+        element: <NewRent />
+      },
+      {
+        path: "/allRents",
+        element: <AllRents />
+      },
+      {
+        path: "/myRents",
+        element: <MyRents />
+      }
     ]
   }
 ])
