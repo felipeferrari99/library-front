@@ -72,7 +72,7 @@ const EditUser = () => {
             </div>
             <div className="formControl">
                 <label htmlFor='password'>Password</label>
-                <input name='password' type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input name='password' type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setPassword('')}/>
             </div>
             <div className="formControl">
                 <label htmlFor='description'>Description</label>
