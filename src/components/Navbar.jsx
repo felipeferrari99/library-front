@@ -78,7 +78,7 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
             <li><button onClick={logout}>Logout</button></li>
           </ul>
           <Link to={`/user/${id}`}>
-            <img style={{width: '3rem', height: '3rem'}} src={image}/>
+            <img style={{width: '3rem', height: '3rem', borderRadius: '50%'}} src={image}/>
           </Link>
         </>
       ) : (

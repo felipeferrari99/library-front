@@ -1,10 +1,11 @@
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useOutletContext, Link } from 'react-router-dom';
 
 import '../Users/Login.css'
 
 const ChangeUserImage = () => {
+  const [, setLoginState] = useOutletContext();
   const [user, setUser] = useState(null);
   const { id } = useParams();
   const [username, setUsername] = useState('');
@@ -45,12 +46,26 @@ const ChangeUserImage = () => {
     formData.append('image', image);
 
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.put(`/user/${id}/image`, formData, {
+      const oldToken = localStorage.getItem('token');
+      const response = await libraryFetch.put(`/user/${id}/image`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${oldToken}`,
         },
       });
+      const { token } = response.data;
+
+      console.log(oldToken)
+      console.log(token)
+
+      localStorage.removeItem('token');
+      localStorage.setItem('token', token);
+
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+
+      setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId });
+
+      console.log(decodedToken)
+
       navigate(`/user/${id}`);
     } catch (error) {
       console.error('Error during user update:', error);
