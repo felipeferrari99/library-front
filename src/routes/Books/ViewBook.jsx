@@ -10,8 +10,8 @@ export default function ViewBook() {
   const [type, setType] = useState('');
   const [favorite, setFavorite] = useState('');
   const [userId, setUserId] = useState('');
-  const [rating, setRating] = useState();
   const [body, setBody] = useState('');
+  const [rating, setRating] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -92,6 +92,8 @@ export default function ViewBook() {
         },
       });
       getBook();
+      setBody('');
+      setRating(null);
     } catch (error) {
       console.error('Error during book update:', error);
     }

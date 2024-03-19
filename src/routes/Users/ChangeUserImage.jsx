@@ -61,8 +61,6 @@ const ChangeUserImage = () => {
 
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId });
 
-      console.log(decodedToken)
-
       navigate(`/user/${id}`);
     } catch (error) {
       console.error('Error during user update:', error);
