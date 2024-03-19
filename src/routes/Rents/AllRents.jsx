@@ -4,6 +4,7 @@ import moment from 'moment';
 
 const AllRents = () => {
   const [rents, setRents] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('active');
 
   const getRents = async () => {
     const token = localStorage.getItem('token');
@@ -28,9 +29,17 @@ const AllRents = () => {
     return <div>Loading...</div>;
   }
 
+  const filteredRents = rents.filter((rent) => statusFilter === 'all' || rent.status === statusFilter);
+
   return (
     <div>
       <h2>All Rents</h2>
+      <div>
+        <button onClick={() => setStatusFilter('all')}>All</button>
+        <button onClick={() => setStatusFilter('active')}>Active</button>
+        <button onClick={() => setStatusFilter('returned')}>Returned</button>
+        <button onClick={() => setStatusFilter('late')}>Late</button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -43,7 +52,7 @@ const AllRents = () => {
           </tr>
         </thead>
         <tbody>
-          {rents.map((rent) => (
+          {filteredRents.map((rent) => (
             <tr key={rent.id}>
               <td>{rent.id}</td>
               <td>{rent.username}</td>

@@ -54,9 +54,6 @@ const ChangeUserImage = () => {
       });
       const { token } = response.data;
 
-      console.log(oldToken)
-      console.log(token)
-
       localStorage.removeItem('token');
       localStorage.setItem('token', token);
 

@@ -24,6 +24,7 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log(decodedToken)
 
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId });
       navigate('/books');

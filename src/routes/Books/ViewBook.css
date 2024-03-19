@@ -1,0 +1,16 @@
+.view-book-container {
+    display: flex;
+    justify-content: space-between;
+}
+  
+.view-book-left {
+    width: 45%;
+}
+  
+.view-book-right {
+    width: 45%;
+}
+
+.comment {
+    padding-top: 1em;
+}

@@ -35,18 +35,19 @@ export default function User() {
     <div>
         {user === null ? (<p>Loading...</p>) : (
             <div>
-                <img style={{width: '15rem', height: '15rem'}} src={user.image} alt={user.username}/>
+                <img style={{width: '15rem', height: '15rem', borderRadius: '50%' }} src={user.image} alt={user.username}/>
                 <h1>{user.username}</h1>
                 <p>{user.description}</p>
                 {book.length !== 0 && (
                     <div>
                         <h2>Favorite Book:</h2>
                         <div className="book">
-                            <Link to={`/books/${book.favorite_book}`}>
-                                <h3>{book.title}</h3>
-                                <img style={{width: '10rem', height: '15rem'}} src={book.image}/>
+                            <Link to={`/books/${book[0].favorite_book}`}>
+                                <h3>{book[0].title}</h3>
+                                <img style={{width: '10rem', height: '15rem'}} src={book[0].image}/>
                             </Link>
-                        </div></div>
+                        </div>
+                    </div>
                 )}
                 {userId == id && (
                     <>
