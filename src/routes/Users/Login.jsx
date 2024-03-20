@@ -1,6 +1,6 @@
 import libraryFetch from '../../axios/config';
 import { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, Link } from 'react-router-dom';
 
 import './Login.css'
 
@@ -46,6 +46,7 @@ const Login = () => {
             </div>
             <input type="submit" value="Login" className="btn" />
         </form>
+        <p className='redirect'>Don't have an account yet? <Link to={"/register"}>Register</Link></p>
     </div>
   )
 };

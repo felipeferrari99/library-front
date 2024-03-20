@@ -25,7 +25,7 @@ export default function Authors() {
     <div className="divBooks">
       <h1>Authors</h1>
       <div className="books">
-        {authors.length === 0 ? (<p>Loading...</p>) : (
+        {authors.length === 0 ? (<p>No authors found!</p>) : (
           authors.map((author) => (
             <div className="book" key={author.id}>
                <Link to={`/authors/${author.id}`}>

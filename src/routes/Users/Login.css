@@ -42,3 +42,9 @@ form {
     color: #fff;
     background-color: #0e1217;
 }
+
+.redirect {
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
