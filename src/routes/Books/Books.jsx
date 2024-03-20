@@ -25,7 +25,7 @@ export default function Books() {
     <div className="divBooks">
       <h1>Books</h1>
       <div className="books">
-        {books.length === 0 ? (<p>Loading...</p>) : (
+        {books.length === 0 ? (<p>No books found!</p>) : (
           books.map((book) => (
             <div className="book" key={book.id}>
               <Link to={`/books/${book.id}`}>

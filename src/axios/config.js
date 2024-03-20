@@ -1,10 +1,12 @@
 import axios from "axios";
 
+const url = import.meta.env.VITE_AXIOS_URL;
+
 const libraryFetch = axios.create({
-    baseURL: "http://localhost:8000",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
+  baseURL: url,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
 });
 
 export default libraryFetch;

@@ -41,7 +41,7 @@ const MyRents = () => {
   }, []);
 
   if (!rents) {
-    return <div>Loading...</div>;
+    return <div>No rents found!</div>;
   }
 
   const filteredRents = rents.filter((rent) => statusFilter === 'all' || rent.status === statusFilter);
