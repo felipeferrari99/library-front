@@ -30,7 +30,7 @@ const Register = () => {
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
 
-      setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId });
+      setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId, username: username });
 
       navigate('/books');
     } catch (error) {

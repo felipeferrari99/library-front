@@ -1,4 +1,4 @@
-import Navbar from './components/Navbar';
+import NavbarComponent from './components/Navbar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ const EventBusNavbar = ({ loginState, setLoginState }) => {
 
   return (
     <>
-      <Navbar loginState={loginState} setLoginState={setLoginState} eventBus={eventBus} />
+      <NavbarComponent loginState={loginState} setLoginState={setLoginState} eventBus={eventBus} />
     </>
   );
 };

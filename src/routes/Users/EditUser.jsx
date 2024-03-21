@@ -76,7 +76,7 @@ const EditUser = () => {
             </div>
             <div className="formControl">
                 <label htmlFor='description'>Description</label>
-                <input name='description' type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <textarea name='description' type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
             </div>
             <input type="submit" value="Update User" className="btn" />
         </form>

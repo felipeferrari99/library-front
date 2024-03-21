@@ -1,16 +1,16 @@
+'use client';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 
-import './Navbar.css'
-
-const Navbar = ({ loginState, setLoginState, eventBus }) => {
+const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
   const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(loginState.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(loginState.isAdmin);
   const [image, setImage] = useState(loginState.image);
   const [id, setId] = useState(loginState.id);
+  const [username, setUsername] = useState(loginState.username)
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -18,6 +18,7 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
     setIsAdmin(false);
     setImage('');
     setId('');
+    setUsername('');
     setLoginState({ isLoggedIn: false, isAdmin: false });
     navigate('/');
   };
@@ -27,6 +28,7 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
     setIsAdmin(loginState.isAdmin);
     setId(loginState.id)
     setImage(loginState.image)
+    setUsername(loginState.username)
   }, [loginState]);
 
   useEffect(() => {  
@@ -51,6 +53,7 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
         setIsAdmin(decodedToken.type === 'admin');
         setId(decodedToken.userId);
         setImage(decodedToken.image);
+        setUsername(decodedToken.username)
       } catch (err) {
         logout();
       }
@@ -61,43 +64,61 @@ const Navbar = ({ loginState, setLoginState, eventBus }) => {
   }, [setLoginState]);
 
   return (
-    <nav className='navbar'>
-        <h2>
-            <Link to={'/'}>Library</Link>
-        </h2>
-        {isAdmin && (
-              <>
-              <ul>
-                <li><Link to="/allRents">All Rents</Link></li>
-                <li><Link to="/newBook">New Book</Link></li>
-                <li><Link to="/newAuthor">New Author</Link></li>
-                <li><button onClick={logout}>Logout</button></li>
-              </ul>
-                <Link to={`/user/${id}`}>
-                  <img style={{width: '3rem', height: '3rem', borderRadius: '50%'}} src={image}/>
-                </Link>
-              </>
-        )}
-        {isLoggedIn && !isAdmin && (
-              <>
-              <ul>
-                <li><Link to="/available">New Rent</Link></li>
-                <li><Link to="/myRents">My Rents</Link></li>
-                <li><button onClick={logout}>Logout</button></li>
-              </ul>
-                <Link to={`/user/${id}`}>
-                  <img className='profile' src={image}/>
-                </Link>
-              </>
-        )}
-        {!isLoggedIn && (
-              <ul>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-              </ul>
-        )}
-    </nav>
+  <Navbar fluid className="bg-gray-800">
+    <Navbar.Brand href="/" className="flex items-center">
+      <img src="favicon.ico" className="mr-3 h-6 sm:h-9" />
+      <span className="self-center whitespace-nowrap text-xl font-semibold">Dream Bookshelf</span>
+    </Navbar.Brand>
+    {isLoggedIn && (
+      <div className="flex md:order-2">
+        <Dropdown arrowIcon={false}
+          inline
+          label={
+            <Avatar alt="User settings" img={image} rounded />
+          }
+        >
+          <Dropdown.Header>
+            <span className="block text-sm">{username}</span>
+          </Dropdown.Header>
+          <Dropdown.Item href={`/user/${id}`}>My Profile</Dropdown.Item>
+          <Dropdown.Item href={`/user/${id}/edit`}>Edit Profile</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+        </Dropdown>
+        <Navbar.Toggle />
+      </div>
+    )}
+    {isLoggedIn && !isAdmin && (
+      <Navbar.Collapse>
+        <Navbar.Link className="text-white" href="/books">All Books</Navbar.Link>
+        <Navbar.Link className="text-white" href="/authors">All Authors</Navbar.Link>
+          <Dropdown inline label='Rents'>
+            <Dropdown.Item href="/available">New Rent</Dropdown.Item>
+            <Dropdown.Item href="/myRents">My Rents</Dropdown.Item>
+          </Dropdown>
+      </Navbar.Collapse>
+    )}
+    {isLoggedIn && isAdmin && (
+      <Navbar.Collapse>
+        <Navbar.Link href="/allRents" className="text-white">All Rents</Navbar.Link>
+          <Dropdown inline label='Books'>
+            <Dropdown.Item href="/books">All Books</Dropdown.Item>
+            <Dropdown.Item href="/newBook">New Book</Dropdown.Item>
+          </Dropdown>
+          <Dropdown inline label='Authors'>
+            <Dropdown.Item href="/authors">All Authors</Dropdown.Item>
+            <Dropdown.Item href="/newAuthor">New Author</Dropdown.Item>
+          </Dropdown>
+      </Navbar.Collapse>
+    )}
+    {!isLoggedIn && (
+      <Navbar.Collapse>
+        <Navbar.Link className="text-white" href="/login">Login</Navbar.Link>
+        <Navbar.Link className="text-white" href="/register">Register</Navbar.Link>
+      </Navbar.Collapse>
+    )}
+  </Navbar>
   );
 };
 
-export default Navbar;
+export default NavbarComponent;

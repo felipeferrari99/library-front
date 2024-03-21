@@ -23,7 +23,9 @@
 }
 
 .book img {
-    width: 100%;
+    display: block; /* Ensures margin: auto; works */
+    margin: 0 auto; /* Center horizontally */
+    width: 50%;
     height: auto;
 }
 
