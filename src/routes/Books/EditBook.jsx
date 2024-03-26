@@ -77,6 +77,9 @@ const EditBook = () => {
         <div className="mb-5">
           <FloatingLabel variant="filled" label="Author Name" name="author" type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
         </div>
+        <Link to={`/books/${id}/image`}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
+        </Link>
         <div className="mb-5">
           <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
         </div>
@@ -88,7 +91,7 @@ const EditBook = () => {
         </div>
         <Button children="Update Book" />
       </form>
-      <p className="text-blue-500 mt-5"><a href={`/books/${id}`}>Cancel</a></p>
+      <a href={`/books/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
     </div>
   );
 };

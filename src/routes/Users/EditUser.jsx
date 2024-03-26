@@ -72,7 +72,7 @@ const EditUser = () => {
           <FloatingLabel variant="filled" label="E-mail" name="email" type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
         </div>
         <div className="mb-5">
-          <FloatingLabel variant="filled" label="Password" name="password" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <FloatingLabel variant="filled" label="Password" name="password" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setPassword('')}/>
         </div>
         <Link to={`/user/${id}/image`}>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
@@ -82,7 +82,7 @@ const EditUser = () => {
         </div>
         <Button children="Update User" />
       </form>
-      <p className="text-blue-500 mt-5"><a href={`/user/${id}`}>Cancel</a></p>
+      <a href={`/user/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
     </div>
   );
 };

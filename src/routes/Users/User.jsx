@@ -3,6 +3,7 @@
 import { Link, useParams } from 'react-router-dom';
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
+import Button from '../../components/Button';
 
 function FavoriteBook({ book }) {
   return (
@@ -69,7 +70,7 @@ export default function User() {
           {userId == id && (
             <div className="mt-8">
               <Link to={`/user/${id}/edit`}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit User</button>
+                <Button children='Edit User'/>
               </Link>
             </div>
           )}

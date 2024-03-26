@@ -28,13 +28,9 @@ export default function Available() {
         ) : (
           books.map((book) => (
             <div className="w-full md:w-1/3 p-5 md:p-10 text-center mb-12 md:mb-0 cursor-pointer" key={book.id}>
-              <Link to={`/books/${book.id}`} className="block">
+              <Link to={`/newRent/${book.id}`}>
                 <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
-              </Link>
-              <Link to={`/authors/${book.author}`} className="block">
                 <p className="text-gray-500 mb-2">{book.authorName}</p>
-              </Link>
-              <Link to={`/books/${book.id}`}>
                 <img className="book-image-30 mx-auto" src={book.image} alt={book.title} />
               </Link>
             </div>

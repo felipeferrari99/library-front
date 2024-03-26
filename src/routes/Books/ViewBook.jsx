@@ -106,14 +106,14 @@ export default function ViewBook() {
   }, [id]);
 
   return (
-    <div className="flex justify-between view-book-container">
-      <div className="view-book-left w-1/2">
+    <div className="flex justify-between">
+      <div className="w-1/2">
         {book === null ? ( <p>Loading...</p> ) : (
           <div>
                 <img style={{width: '15rem', height: '20rem'}} src={book.book.image} alt={book.title}/>
-                <h1>{book.book.title}</h1>
+                <h1 className="text-2xl">{book.book.title}</h1>
                 <Link to={`/authors/${book.book.author}`}>
-                  <h3>{book.book.authorName}</h3>
+                  <h3 className="text-xl">{book.book.authorName}</h3>
                 </Link>
                 <p>{book.book.description}</p>
                 <p>Released: {moment(book.book.release_date).format('DD/MM/YYYY')}</p>
@@ -124,30 +124,27 @@ export default function ViewBook() {
         )
         }
         {type === 'admin' && (
-          <>
-          <Link to={`/books/${id}/edit`}>
-              <button>Edit Book</button>
-          </Link>
-          <Link to={`/books/${id}/image`}>
-              <button>Change Image</button>
-          </Link>
-          <button onClick={() => deleteBook(id)}>Delete Book</button>
-          </>
+          <div className="justify-between mt-5">
+            <Link to={`/books/${id}/edit`}>
+                <Button children="Edit Book" />
+            </Link>
+            <button onClick={() => deleteBook(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Book</button>
+          </div>
         )}
+        <div className="justify-between mt-5">
         {type == 'user' && favorite == id && (
-          <button onClick={() => changeFavorite(id)}>Unfavorite?</button>
+          <Button onClick={() => changeFavorite(id)} children="&#9734; Unfavorite?"/>
         )}
         {type == 'user' && favorite != id && (
-          <button onClick={() => changeFavorite(id)}>Favorite!</button>
+          <Button onClick={() => changeFavorite(id)} children="&#9733; Favorite!"/>
         )}
         {book != null && type === 'user' && book.book.qty_available > 0 && (
             <Link to={`/newRent/${id}`}>
-              <button>Rent Book</button>
+              <Button children='Rent Book' />
             </Link>
         )}
-        <Link to={'/books'}>
-            <a>All Books</a>
-        </Link>
+        </div>
+        <a href="/books" className="block mt-5 text-blue-500 hover:text-blue-700">All Books</a>
         </div>
         <div className="w-1/2">
         <div className="mb-5">
@@ -183,7 +180,7 @@ export default function ViewBook() {
                   <p>{comment.rating}</p>
                   <p>{comment.body}</p>
                   {userId == comment.user && (
-                    <button onClick={() => deleteComment(comment.id)}>Delete Comment</button>
+                    <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Book</button>
                   )}
                 </div>
               ))

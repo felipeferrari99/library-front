@@ -66,7 +66,7 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
   return (
     <Navbar fluid className="bg-gray-800">
       <Navbar.Brand href="/">
-        <img src="favicon.ico" className="mr-3 h-6 sm:h-9" />
+        <img src="/Icon.png" className="mr-3 h-6 sm:h-9" />
         <span className="self-center whitespace-nowrap text-xl">Dream Bookshelf</span>
       </Navbar.Brand>
       <div className="flex flex-row md:order-3 items-center">
@@ -108,7 +108,7 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
           </>
         )}
         {!isLoggedIn && (
-          <div className="md:flex md:justify-end md:order-3"> {/* Aligns login/register buttons to the end */}
+          <div className="md:flex md:justify-end md:order-3">
             <Navbar.Link className="text-white mr-2 md:mr-4" href="/register">Register</Navbar.Link>
             <Navbar.Link className="text-white" href="/login">Login</Navbar.Link>
           </div>

@@ -1,12 +1,15 @@
-import { Link } from 'react-router-dom';
+'use client';
 
-import './Home.css'
+import { Link } from 'react-router-dom';
+import Button from '../components/Button';
 
 export default function Home() {
-    return (
-      <div className='home'>
-        <h1 className="text-3xl font-bold">Welcome to Library!</h1>
-        <button><Link to={'/books'}>View Books!</Link></button>
-      </div>
-    )
-  }
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <h1 className="text-3xl mt-10 mb-10 font-bold">Welcome to Dream Bookshelf!</h1>
+      <Link to={'/books'}>
+        <Button children="View Books!" />
+      </Link>
+    </div>
+  );
+}

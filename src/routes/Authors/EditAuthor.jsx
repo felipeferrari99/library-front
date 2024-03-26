@@ -72,7 +72,7 @@ const EditAuthor = () => {
         </div>
         <Button children="Update Author" />
       </form>
-      <p className="text-blue-500 mt-5"><a href={`/authors/${id}`}>Cancel</a></p>
+      <a href={`/authors/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
     </div>
   );
 };

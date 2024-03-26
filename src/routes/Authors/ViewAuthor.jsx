@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import Button from '../../components/Button';
 
 export default function ViewAuthor() {
   const [author, setAuthor] = useState(null);
@@ -76,18 +77,12 @@ export default function ViewAuthor() {
         {type == 'admin' && (
           <div className="flex justify-between mt-10">
               <Link to={`/authors/${id}/edit`}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit Author</button>
-              </Link>
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => deleteAuthor(id)}>
-              Delete Author
-            </button>
+                <Button children="Edit Author" />
+            </Link>
+            <button onClick={() => deleteAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
           </div>
         )}
-        <Link to={'/authors'}>
-          <a className="block mt-10 text-blue-500 hover:text-blue-700 text-center">
-            Other Authors
-          </a>
-        </Link>
+        <a href="/authors" className="block mt-10 text-blue-500 hover:text-blue-700 text-center">Other Authors</a>
       </div>
     )}
   </div>
