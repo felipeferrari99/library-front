@@ -2,8 +2,6 @@ import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useOutletContext, Link } from 'react-router-dom';
 
-import '../Users/Login.css'
-
 const ChangeUserImage = () => {
   const [, setLoginState] = useOutletContext();
   const [user, setUser] = useState(null);

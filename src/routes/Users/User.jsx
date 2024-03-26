@@ -1,6 +1,19 @@
-import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
-import { useParams, Link } from 'react-router-dom';
+'use client';
+
+import { Link, useParams } from 'react-router-dom';
+import libraryFetch from '../../axios/config';
+import { useState, useEffect } from 'react';
+
+function FavoriteBook({ book }) {
+  return (
+    <div className="book text-center">
+      <Link to={`/books/${book.favorite_book}`}>
+        <h3 className="text-xl font-bold mb-2">{book.title}</h3>
+        <img style={{ width: '10rem', height: '15rem' }} src={book.image} alt={book.title} />
+      </Link>
+    </div>
+  );
+}
 
 export default function User() {
   const [user, setUser] = useState(null);
@@ -14,53 +27,54 @@ export default function User() {
       const response = await libraryFetch.get(`/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-      }})
+        },
+      });
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUserId(decodedToken.userId)
+        setUserId(decodedToken.userId);
       }
       const data = response.data;
       setUser(data.user[0]);
-      setBook(data.book)
+      setBook(data.book);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
   }, [id]);
 
   return (
-    <div>
-        {user === null ? (<p>Loading...</p>) : (
-            <div>
-                <img style={{width: '15rem', height: '15rem', borderRadius: '50%' }} src={user.image} alt={user.username}/>
-                <h1>{user.username}</h1>
-                <p>{user.description}</p>
-                {book.length !== 0 && (
-                    <div>
-                        <h2>Favorite Book:</h2>
-                        <div className="book">
-                            <Link to={`/books/${book[0].favorite_book}`}>
-                                <h3>{book[0].title}</h3>
-                                <img style={{width: '10rem', height: '15rem'}} src={book[0].image}/>
-                            </Link>
-                        </div>
-                    </div>
-                )}
-                {userId == id && (
-                    <>
-                    <Link to={`/user/${id}/edit`}>
-                        <button>Edit User</button>
-                    </Link>
-                    <Link to={`/user/${id}/image`}>
-                        <button>Change Image</button>
-                    </Link>
-                    </>
-                )}
+    <div className="flex flex-col items-center">
+      {user === null ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <img
+            style={{ width: '15rem', height: '15rem', borderRadius: '50%' }}
+            src={user.image}
+            alt={user.username}
+          />
+          <h1 className="text-2xl font-bold mt-3">{user.username}</h1>
+          <p className="text-center max-w-xl mt-3">{user.description}</p>
+
+          {book && book.length !== 0 && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold mb-2">Favorite Book:</h2>
+              <FavoriteBook key={book[0].favorite_book} book={book[0]} />
             </div>
-        )}
+          )}
+
+          {userId == id && (
+            <div className="mt-8">
+              <Link to={`/user/${id}/edit`}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit User</button>
+              </Link>
+            </div>
+          )}
+        </>
+      )}
     </div>
-  )
+  );
 }

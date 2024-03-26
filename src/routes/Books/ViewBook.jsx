@@ -1,9 +1,11 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
-
-import './ViewBook.css'
+import { FloatingLabel } from 'flowbite-react';
+import Button from '../../components/Button';
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
@@ -104,10 +106,10 @@ export default function ViewBook() {
   }, [id]);
 
   return (
-    <div className="view-book-container">
-      <div className="view-book-left">
-        {book === null ? (<p>Loading...</p>) : (
-            <div>
+    <div className="flex justify-between view-book-container">
+      <div className="view-book-left w-1/2">
+        {book === null ? ( <p>Loading...</p> ) : (
+          <div>
                 <img style={{width: '15rem', height: '20rem'}} src={book.book.image} alt={book.title}/>
                 <h1>{book.book.title}</h1>
                 <Link to={`/authors/${book.book.author}`}>
@@ -147,20 +149,22 @@ export default function ViewBook() {
             <a>All Books</a>
         </Link>
         </div>
-        <div className="view-book-right">
-        <h2>Comments</h2>
+        <div className="w-1/2">
+        <div className="mb-5">
+          <h2 className="text-2xl">Comments</h2>
+        </div>
         {type === 'user' && (
-          <div>
+          <div className="p-10 max-w-md mx-auto">
             <h3>Leave a comment!</h3>
             <form onSubmit={handleSubmit}>
-              <div className="formControl">
+              <div>
                 <label htmlFor="rating">Rating</label>
                 <input name="rating" type="number" id="rating" onChange={(e) => setRating(e.target.value)} />
               </div>
-              <div className="formControl">
-                <textarea name="body" id="body" onChange={(e) => setBody(e.target.value)}></textarea>
+              <div className="mb-5">
+                <FloatingLabel variant="filled" label="Comment" name="body" type="text" id="body" onChange={(e) => setBody(e.target.value)}/>
               </div>
-              <input type="submit" value="Post" className="btn" />
+              <Button children="Post" />
             </form>
           </div>
         )}

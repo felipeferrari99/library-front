@@ -1,8 +1,10 @@
+'use client';
+
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-
-import '../Users/Login.css'
+import { FloatingLabel } from 'flowbite-react';
+import Button from '../../components/Button';
 
 const EditUser = () => {
   const [user, setUser] = useState(null);
@@ -63,28 +65,26 @@ const EditUser = () => {
   }
 
   return (
-    <div className="login">
-        <h2>Edit User</h2>
-        <form onSubmit={handleSubmit}>
-            <div className="formControl">
-                <label htmlFor='email'>E-mail</label>
-                <input name='email' type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="formControl">
-                <label htmlFor='password'>Password</label>
-                <input name='password' type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setPassword('')}/>
-            </div>
-            <div className="formControl">
-                <label htmlFor='description'>Description</label>
-                <textarea name='description' type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-            </div>
-            <input type="submit" value="Update User" className="btn" />
-        </form>
-        <Link to={`/user/${id}`}>
-            <a>Cancel</a>
+    <div className="p-10 max-w-md mx-auto">
+      <h2 className="text-2xl text-center font-semibold mb-6">Edit User</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5">
+          <FloatingLabel variant="filled" label="E-mail" name="email" type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        </div>
+        <div className="mb-5">
+          <FloatingLabel variant="filled" label="Password" name="password" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        </div>
+        <Link to={`/user/${id}/image`}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
         </Link>
+        <div className="mb-5">
+          <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+        </div>
+        <Button children="Update User" />
+      </form>
+      <p className="text-blue-500 mt-5"><a href={`/user/${id}`}>Cancel</a></p>
     </div>
-  )
-}
+  );
+};
 
 export default EditUser;

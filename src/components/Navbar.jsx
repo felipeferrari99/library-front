@@ -64,60 +64,57 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
   }, [setLoginState]);
 
   return (
-  <Navbar fluid className="bg-gray-800">
-    <Navbar.Brand href="/" className="flex items-center">
-      <img src="favicon.ico" className="mr-3 h-6 sm:h-9" />
-      <span className="self-center whitespace-nowrap text-xl font-semibold">Dream Bookshelf</span>
-    </Navbar.Brand>
-    {isLoggedIn && (
-      <div className="flex md:order-2">
-        <Dropdown arrowIcon={false}
-          inline
-          label={
-            <Avatar alt="User settings" img={image} rounded />
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">{username}</span>
-          </Dropdown.Header>
-          <Dropdown.Item href={`/user/${id}`}>My Profile</Dropdown.Item>
-          <Dropdown.Item href={`/user/${id}/edit`}>Edit Profile</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-        </Dropdown>
-        <Navbar.Toggle />
+    <Navbar fluid className="bg-gray-800">
+      <Navbar.Brand href="/">
+        <img src="favicon.ico" className="mr-3 h-6 sm:h-9" />
+        <span className="self-center whitespace-nowrap text-xl">Dream Bookshelf</span>
+      </Navbar.Brand>
+      <div className="flex flex-row md:order-3 items-center">
+        <Navbar.Toggle className="ml-2" />
+        {isLoggedIn && (
+          <Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img={image} rounded />}>
+            <Dropdown.Header>
+              <span className="block text-sm">{username}</span>
+            </Dropdown.Header>
+            <Dropdown.Item href={`/user/${id}`}>My Profile</Dropdown.Item>
+            <Dropdown.Item href={`/user/${id}/edit`}>Edit Profile</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+          </Dropdown>
+        )}
       </div>
-    )}
-    {isLoggedIn && !isAdmin && (
       <Navbar.Collapse>
-        <Navbar.Link className="text-white" href="/books">All Books</Navbar.Link>
-        <Navbar.Link className="text-white" href="/authors">All Authors</Navbar.Link>
-          <Dropdown inline label='Rents'>
-            <Dropdown.Item href="/available">New Rent</Dropdown.Item>
-            <Dropdown.Item href="/myRents">My Rents</Dropdown.Item>
-          </Dropdown>
+        {isLoggedIn && !isAdmin && (
+          <>
+            <Navbar.Link className="text-white" href="/books">All Books</Navbar.Link>
+            <Navbar.Link className="text-white" href="/authors">All Authors</Navbar.Link>
+            <Dropdown inline label='Rents'>
+              <Dropdown.Item href="/available">New Rent</Dropdown.Item>
+              <Dropdown.Item href="/myRents">My Rents</Dropdown.Item>
+            </Dropdown>
+          </>
+        )}
+        {isLoggedIn && isAdmin && (
+          <>
+            <Navbar.Link href="/allRents" className="text-white">All Rents</Navbar.Link>
+            <Dropdown inline label='Books'>
+              <Dropdown.Item href="/books">All Books</Dropdown.Item>
+              <Dropdown.Item href="/newBook">New Book</Dropdown.Item>
+            </Dropdown>
+            <Dropdown inline label='Authors'>
+              <Dropdown.Item href="/authors">All Authors</Dropdown.Item>
+              <Dropdown.Item href="/newAuthor">New Author</Dropdown.Item>
+            </Dropdown>
+          </>
+        )}
+        {!isLoggedIn && (
+          <div className="md:flex md:justify-end md:order-3"> {/* Aligns login/register buttons to the end */}
+            <Navbar.Link className="text-white mr-2 md:mr-4" href="/register">Register</Navbar.Link>
+            <Navbar.Link className="text-white" href="/login">Login</Navbar.Link>
+          </div>
+        )}
       </Navbar.Collapse>
-    )}
-    {isLoggedIn && isAdmin && (
-      <Navbar.Collapse>
-        <Navbar.Link href="/allRents" className="text-white">All Rents</Navbar.Link>
-          <Dropdown inline label='Books'>
-            <Dropdown.Item href="/books">All Books</Dropdown.Item>
-            <Dropdown.Item href="/newBook">New Book</Dropdown.Item>
-          </Dropdown>
-          <Dropdown inline label='Authors'>
-            <Dropdown.Item href="/authors">All Authors</Dropdown.Item>
-            <Dropdown.Item href="/newAuthor">New Author</Dropdown.Item>
-          </Dropdown>
-      </Navbar.Collapse>
-    )}
-    {!isLoggedIn && (
-      <Navbar.Collapse>
-        <Navbar.Link className="text-white" href="/login">Login</Navbar.Link>
-        <Navbar.Link className="text-white" href="/register">Register</Navbar.Link>
-      </Navbar.Collapse>
-    )}
-  </Navbar>
+    </Navbar>
   );
 };
 

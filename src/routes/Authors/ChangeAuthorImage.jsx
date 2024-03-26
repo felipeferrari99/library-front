@@ -2,8 +2,6 @@ import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-import '../Users/Login.css'
-
 const ChangeAuthorImage = () => {
   const [author, setAuthor] = useState(null);
   const { id } = useParams();

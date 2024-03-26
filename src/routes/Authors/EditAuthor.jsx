@@ -1,8 +1,10 @@
+'use client';
+
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-
-import '../Users/Login.css'
+import { FloatingLabel } from 'flowbite-react';
+import Button from '../../components/Button';
 
 const EditAuthor = () => {
   const [author, setAuthor] = useState(null);
@@ -56,24 +58,23 @@ const EditAuthor = () => {
   }
 
   return (
-    <div className="login">
-        <h2>Edit Author</h2>
-        <form onSubmit={handleSubmit}>
-            <div className="formControl">
-                <label htmlFor='name'>Author Name</label>
-                <input name='name' type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="formControl">
-                <label htmlFor='description'>Description</label>
-                <input name='description' type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
-            <input type="submit" value="Update Author" className="btn" />
-        </form>
-        <Link to={`/authors/${id}`}>
-            <a>Cancel</a>
+    <div className="p-10 max-w-md mx-auto">
+      <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5">
+          <FloatingLabel variant="filled" label="Author Name" name="name" type="text" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
+        </div>
+        <Link to={`/authors/${id}/image`}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
         </Link>
+        <div className="mb-5">
+          <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+        </div>
+        <Button children="Update Author" />
+      </form>
+      <p className="text-blue-500 mt-5"><a href={`/authors/${id}`}>Cancel</a></p>
     </div>
-  )
-}
+  );
+};
 
 export default EditAuthor;
