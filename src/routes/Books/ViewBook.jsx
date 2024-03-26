@@ -106,81 +106,81 @@ export default function ViewBook() {
   }, [id]);
 
   return (
-    <div className="flex justify-between">
-      <div className="w-1/2">
-        {book === null ? ( <p>Loading...</p> ) : (
-          <div>
-                <img style={{width: '15rem', height: '20rem'}} src={book.book.image} alt={book.title}/>
-                <h1 className="text-2xl">{book.book.title}</h1>
-                <Link to={`/authors/${book.book.author}`}>
-                  <h3 className="text-xl">{book.book.authorName}</h3>
-                </Link>
-                <p>{book.book.description}</p>
-                <p>Released: {moment(book.book.release_date).format('DD/MM/YYYY')}</p>
-                {type === 'admin' && (
-                  <p>Quantity available: {book.book.qty_available}</p>
-                )}
-            </div>
-        )
-        }
-        {type === 'admin' && (
-          <div className="justify-between mt-5">
-            <Link to={`/books/${id}/edit`}>
-                <Button children="Edit Book" />
+    <div className="flex justify-between max-w-5xl mx-auto">
+      <div className="w-1/2 p-5">
+        {book === null ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="flex flex-col items-center">
+            <img className="w-60 h-90 mb-5" src={book.book.image} alt={book.title} />
+            <h1 className="text-3xl mb-2">{book.book.title}</h1>
+            <Link to={`/authors/${book.book.author}`}>
+              <h3 className="text-xl mb-5">{book.book.authorName}</h3>
             </Link>
-            <button onClick={() => deleteBook(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Book</button>
+            <p className="text-lg mb-5">{book.book.description}</p>
+            <p className="text-lg">Released: {moment(book.book.release_date).format("DD/MM/YYYY")}</p>
+            {type === 'admin' && (
+              <p className="text-md mt-2">Quantity available: {book.book.qty_available}</p>
+            )}
+            {type === 'admin' && (
+              <div className="mt-5 flex justify-between md:justify-start">
+                <Link to={`/books/${id}/edit`}>
+                  <Button children="Edit Book" />
+                </Link>
+                <button onClick={() => deleteBook(id)} className="p-2 pl-4 pr-4 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                  Delete Book
+                </button>
+              </div>
+            )}
+           {type == 'user' && (
+              <div className="mt-5 space-between">
+                {favorite == id && (
+                    <Button onClick={() => changeFavorite(id)} children="&#9734; Unfavorite?" />
+                )}
+                {favorite != id && (
+                    <Button onClick={() => changeFavorite(id)} children="&#9733; Favorite!" />
+                )}
+                {book != null && book.book.qty_available > 0 && (
+                    <Link to={`/newRent/${id}`}>
+                      <Button children="Rent Book" />
+                    </Link>
+                )}
+              </div>
+            )}
+            <a href="/books" className="mt-5 block text-blue-500 hover:text-blue-700">All Books</a>
           </div>
         )}
-        <div className="justify-between mt-5">
-        {type == 'user' && favorite == id && (
-          <Button onClick={() => changeFavorite(id)} children="&#9734; Unfavorite?"/>
-        )}
-        {type == 'user' && favorite != id && (
-          <Button onClick={() => changeFavorite(id)} children="&#9733; Favorite!"/>
-        )}
-        {book != null && type === 'user' && book.book.qty_available > 0 && (
-            <Link to={`/newRent/${id}`}>
-              <Button children='Rent Book' />
-            </Link>
-        )}
-        </div>
-        <a href="/books" className="block mt-5 text-blue-500 hover:text-blue-700">All Books</a>
-        </div>
-        <div className="w-1/2">
+      </div>
+      <div className="w-1/2 p-5">
         <div className="mb-5">
-          <h2 className="text-2xl">Comments</h2>
+          <h2 className="text-3xl mb-2">Comments</h2>
         </div>
         {type === 'user' && (
-          <div className="p-10 max-w-md mx-auto">
-            <h3>Leave a comment!</h3>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="rating">Rating</label>
-                <input name="rating" type="number" id="rating" onChange={(e) => setRating(e.target.value)} />
-              </div>
-              <div className="mb-5">
-                <FloatingLabel variant="filled" label="Comment" name="body" type="text" id="body" onChange={(e) => setBody(e.target.value)}/>
-              </div>
+          <div className="max-w-md mx-auto mb-5">
+            <h3 className="text-xl mb-4">Leave a comment!</h3>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+              <FloatingLabel className="rounded-lg" variant="filled" label="Rating" name="rating" type="number" id="rating" onChange={(e) => setRating(e.target.value)}/>
+              <FloatingLabel className="rounded-lg" variant="filled" label="Comment" name="body" type="text" id="body" onChange={(e) => setBody(e.target.value)}/>
               <Button children="Post" />
             </form>
           </div>
         )}
-        {book === null ? (
-          <p></p>
-        ) : (
-          <div>
+        {book === null ? (<p></p>) : (
+          <div className="flex flex-col gap-2">
             {book.comments.length === 0 ? (
               <p className="comment">No comments for this book yet!</p>
             ) : (
               book.comments.map((comment) => (
-                <div className="comment" key={comment.id}>
+                <div className="border rounded-md p-2" key={comment.id}>
                   <Link to={`/user/${comment.user}`}>
-                    <h5>{comment.username}</h5>
-                  </Link>
-                  <p>{comment.rating}</p>
-                  <p>{comment.body}</p>
+                    <h4 className="block text-blue-500 hover:text-blue-700">{comment.username}</h4>
+                    </Link>
+                  <p className="text-xl mb-2">{comment.rating}</p>
+                  <p className="mb-2">{comment.body}</p>
                   {userId == comment.user && (
-                    <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Book</button>
+                    <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                      Delete Comment
+                    </button>
                   )}
                 </div>
               ))
@@ -188,6 +188,6 @@ export default function ViewBook() {
           </div>
         )}
       </div>
-    </div>    
-  )
+    </div>
+  );
 }
