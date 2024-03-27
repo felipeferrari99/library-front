@@ -33,37 +33,47 @@ const AllRents = () => {
 
   return (
     <div>
-      <h2>All Rents</h2>
-      <div>
-        <button onClick={() => setStatusFilter('all')}>All</button>
-        <button onClick={() => setStatusFilter('active')}>Active</button>
-        <button onClick={() => setStatusFilter('returned')}>Returned</button>
-        <button onClick={() => setStatusFilter('late')}>Late</button>
+      <h2 className="text-2xl font-bold mb-4">All Rents</h2>
+      <div className="flex items-center">
+        <button onClick={() => setStatusFilter('all')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          All
+        </button>
+        <button onClick={() => setStatusFilter('active')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          Active
+        </button>
+        <button onClick={() => setStatusFilter('returned')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          Returned
+        </button>
+        <button onClick={() => setStatusFilter('late')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Late
+        </button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Book</th>
-            <th>Rent Start</th>
-            <th>Rent End</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRents.map((rent) => (
-            <tr key={rent.id}>
-              <td>{rent.id}</td>
-              <td>{rent.username}</td>
-              <td>{rent.title}</td>
-              <td>{moment(rent.date_rented).format('DD/MM/YYYY')}</td>
-              <td>{moment(rent.date_for_return).format('DD/MM/YYYY')}</td>
-              <td>{rent.status}</td>
+      <div className="w-full overflow-hidden rounded-lg shadow-xs">
+        <table className="w-full text-center">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">ID</th>
+              <th className="px-4 py-2">User</th>
+              <th className="px-4 py-2">Book</th>
+              <th className="px-4 py-2">Rent Start</th>
+              <th className="px-4 py-2">Rent End</th>
+              <th className="px-4 py-2">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {filteredRents.map((rent) => (
+              <tr key={rent.id}>
+                <td className="border px-4 py-2">{rent.id}</td>
+                <td className="border px-4 py-2">{rent.username}</td>
+                <td className="border px-4 py-2">{rent.title}</td>
+                <td className="border px-4 py-2">{moment(rent.date_rented).format('DD/MM/YYYY')}</td>
+                <td className="border px-4 py-2">{moment(rent.date_for_return).format('DD/MM/YYYY')}</td>
+                <td className="border px-4 py-2">{rent.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

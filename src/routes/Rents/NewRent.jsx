@@ -1,6 +1,10 @@
+'use client';
+
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FloatingLabel } from 'flowbite-react';
+import Button from '../../components/Button';
 
 const NewRent = () => {
   const [book, setBook] = useState(null);
@@ -35,7 +39,7 @@ const NewRent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate(`/available`);
+      navigate(`/myRents`);
     } catch (error) {
       console.error('Error during book update:', error);
     }
@@ -46,24 +50,26 @@ const NewRent = () => {
   }
 
   return (
-    <div className="login">
-        <h2>Renting: {book.title}</h2>
-        <img style={{width: '15rem', height: '20rem'}} src={book.image} alt={book.title}/>
+    <div className="flex justify-between max-w-5xl mx-auto">
+      <div className="w-1/2 p-5">
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl mb-5">Renting: {book.title}</h2>
+          <img className="w-60 h-90" src={book.image} alt={book.title}/>
+          <div className="mt-5">
+            <a href="/available" className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
+          </div>
+        </div>
+      </div>
+      <div className="w-1/2 p-5 mt-10">
         <form onSubmit={handleSubmit}>
-            <div className="formControl">
-                <label htmlFor='days'>How many days do you want to rent this book for?</label>
-                <input id='days' type="number" onChange={(e) => setDays(e.target.value)} />
+            <div className="mt-7 mb-5">
+              <FloatingLabel variant="filled" label="How many days do you want to rent this book for?" name='days' type="number" min={1} id="days" onChange={(e) => setDays(e.target.value)}/>
             </div>
-            <input type="submit" value="Rent" className="btn" />
+            <Button children="Rent" />
         </form>
-        <Link to={`/available`}>
-            <p>Available Books</p>
-        </Link>
-        <Link to={'/books'}>
-            <a>All Books</a>
-        </Link>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default NewRent;

@@ -95,7 +95,7 @@ export default function ViewBook() {
       });
       getBook();
       setBody('');
-      setRating(null);
+      setRating('');
     } catch (error) {
       console.error('Error during book update:', error);
     }
@@ -123,7 +123,7 @@ export default function ViewBook() {
               <p className="text-md mt-2">Quantity available: {book.book.qty_available}</p>
             )}
             {type === 'admin' && (
-              <div className="mt-5 flex justify-between md:justify-start">
+             <div className="mt-5 flex flex-col md:flex-row md:justify-start gap-2">
                 <Link to={`/books/${id}/edit`}>
                   <Button children="Edit Book" />
                 </Link>
@@ -133,12 +133,12 @@ export default function ViewBook() {
               </div>
             )}
            {type == 'user' && (
-              <div className="mt-5 space-between">
+              <div className="mt-5 flex flex-col md:flex-row md:justify-start gap-2">
                 {favorite == id && (
-                    <Button onClick={() => changeFavorite(id)} children="&#9734; Unfavorite?" />
+                    <Button onClick={() => changeFavorite(id)} children="&#9733; Unfavorite?" />
                 )}
                 {favorite != id && (
-                    <Button onClick={() => changeFavorite(id)} children="&#9733; Favorite!" />
+                    <Button onClick={() => changeFavorite(id)} children="&#9734; Favorite!" />
                 )}
                 {book != null && book.book.qty_available > 0 && (
                     <Link to={`/newRent/${id}`}>
@@ -159,8 +159,8 @@ export default function ViewBook() {
           <div className="max-w-md mx-auto mb-5">
             <h3 className="text-xl mb-4">Leave a comment!</h3>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-              <FloatingLabel className="rounded-lg" variant="filled" label="Rating" name="rating" type="number" id="rating" onChange={(e) => setRating(e.target.value)}/>
-              <FloatingLabel className="rounded-lg" variant="filled" label="Comment" name="body" type="text" id="body" onChange={(e) => setBody(e.target.value)}/>
+              <FloatingLabel className="rounded-lg" variant="filled" label="Rating" name="rating" type="number" id="rating" value={rating}  onChange={(e) => setRating(e.target.value)}/>
+              <FloatingLabel className="rounded-lg" variant="filled" label="Comment" name="body" type="text" id="body" value={body} onChange={(e) => setBody(e.target.value)}/>
               <Button children="Post" />
             </form>
           </div>

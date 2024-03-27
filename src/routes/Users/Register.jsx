@@ -58,7 +58,7 @@ const Register = () => {
           </div>
           <Button children='Register' />
       </form>
-      <p className="mt-6 text-gray-500">Already have an account? <a href='/login' className="text-blue-500">Login</a></p>
+      <p className="mt-6 text-gray-500">Already have an account? <a href='/login' className="text-blue-500 hover:text-blue-700">Login</a></p>
     </div>
   )
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import moment from 'moment';
+import Button from '../../components/Button';
 
 const MyRents = () => {
   const [rents, setRents] = useState(null);
@@ -48,36 +49,48 @@ const MyRents = () => {
 
   return (
     <div>
-      <h2>All Rents</h2>
-      <div>
-        <button onClick={() => setStatusFilter('all')}>All</button>
-        <button onClick={() => setStatusFilter('active')}>Active</button>
-        <button onClick={() => setStatusFilter('returned')}>Returned</button>
-        <button onClick={() => setStatusFilter('late')}>Late</button>
+      <h2 className="text-2xl font-bold mb-4">All Rents</h2>
+      <div className="flex items-center mb-6">
+        <button onClick={() => setStatusFilter('all')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          All
+        </button>
+        <button onClick={() => setStatusFilter('active')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          Active
+        </button>
+        <button onClick={() => setStatusFilter('returned')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+          Returned
+        </button>
+        <button onClick={() => setStatusFilter('late')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Late
+        </button>
       </div>
-      <table>
+      <table className="w-full text-center">
         <thead>
-            <tr>
-              <th>ID</th>
-              <th>Book</th>
-              <th>Rent Start</th>
-              <th>Rent End</th>
-              <th>Status</th>
-              {statusFilter !== 'returned' && (
-              <th>Return</th>
-              )}
-            </tr>
+          <tr>
+            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Book</th>
+            <th className="px-4 py-2">Rent Start</th>
+            <th className="px-4 py-2">Rent End</th>
+            <th className="px-4 py-2">Status</th>
+            {statusFilter !== 'returned' && (
+              <th className="px-4 py-2">Return</th>
+            )}
+          </tr>
         </thead>
         <tbody>
           {filteredRents.map((rent) => (
             <tr key={rent.id}>
-              <td>{rent.id}</td>
-              <td>{rent.title}</td>
-              <td>{moment(rent.date_rented).format('DD/MM/YYYY')}</td>
-              <td>{moment(rent.date_for_return).format('DD/MM/YYYY')}</td>
-              <td>{rent.status}</td>
+              <td className="border px-4 py-2">{rent.id}</td>
+              <td className="border px-4 py-2">{rent.title}</td>
+              <td className="border px-4 py-2">{moment(rent.date_rented).format('DD/MM/YYYY')}</td>
+              <td className="border px-4 py-2">{moment(rent.date_for_return).format('DD/MM/YYYY')}</td>
+              <td className="border px-4 py-2">{rent.status}</td>
               {rent.status !== 'returned' && (
-                <td><button onClick={() => returnBook(rent.id)}>Return Book</button></td>
+                <td className="border px-4 py-2">
+                  <Button onClick={() => returnBook(rent.id)} gradientMonochrome="purple" className="w-full">
+                    Return Book
+                  </Button>
+                </td>
               )}
             </tr>
           ))}

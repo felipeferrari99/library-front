@@ -75,14 +75,14 @@ export default function ViewAuthor() {
           </div>
         )}
         {type == 'admin' && (
-          <div className="flex justify-between mt-10">
+          <div className="mt-10 flex flex-col md:flex-row md:justify-start gap-2">
               <Link to={`/authors/${id}/edit`}>
                 <Button children="Edit Author" />
             </Link>
             <button onClick={() => deleteAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
           </div>
         )}
-        <a href="/authors" className="block mt-10 text-blue-500 hover:text-blue-700 text-center">Other Authors</a>
+        <a href="/authors" className="block mt-5 text-blue-500 hover:text-blue-700 text-center">Other Authors</a>
       </div>
     )}
   </div>

@@ -46,7 +46,7 @@ const Login = () => {
           </div>
           <Button children='Login' />
       </form>
-      <p className="mt-6 text-gray-500">Don't have an account yet? <a href='/register' className="text-blue-500">Register</a></p>
+      <p className="mt-6 text-gray-500">Don't have an account yet? <a href='/register' className="text-blue-500 hover:text-blue-700">Register</a></p>
     </div>
   )
 };
