@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import moment from 'moment';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const MyRents = () => {
   const [rents, setRents] = useState(null);
@@ -18,7 +19,7 @@ const MyRents = () => {
       const data = response.data;
       setRents(data);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error getting rents: ${error.response.data.message}`);
     }
   };
 
@@ -32,8 +33,9 @@ const MyRents = () => {
       setRents((prevRents) =>
         prevRents.map((rent) => (rent.id === id ? { ...rent, status: "returned" } : rent))
       );
+      toast.success('Book returned!');
     } catch (error) {
-      console.log(error);
+      toast.error(`Error returning book: ${error.response.data.message}`);
     }
   };
 

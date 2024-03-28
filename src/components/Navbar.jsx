@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { toast } from 'react-toastify';
 
 const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
     setId('');
     setUsername('');
     setLoginState({ isLoggedIn: false, isAdmin: false });
+    toast.success('Goodbye!');
     navigate('/');
   };
 

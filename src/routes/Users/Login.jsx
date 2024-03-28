@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [, setLoginState] = useOutletContext();
@@ -27,10 +28,11 @@ const Login = () => {
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
 
+      toast.success('Logged in successfully!');
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId, username: username });
       navigate('/books');
     } catch (error) {
-      console.error('Error during login:', error);
+      toast.error(`Error during login: ${error.response.data.message}`);
     }
   }
 

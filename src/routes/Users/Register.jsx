@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [, setLoginState] = useOutletContext();
@@ -18,7 +19,7 @@ const Register = () => {
   const register = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      console.error('Passwords do not match!');
+      toast.warn('Passwords do not match');
       return;
     }
     try {
@@ -26,7 +27,9 @@ const Register = () => {
         username: username,
         email: email,
         password: password
-      });const { token } = response.data;
+      }); 
+      
+      const { token } = response.data;
 
       localStorage.setItem('token', token);
 
@@ -34,9 +37,10 @@ const Register = () => {
 
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId, username: username });
 
+      toast.success('Registered successfully!');
       navigate('/books');
     } catch (error) {
-      console.error('Error during registration:', error);
+      toast.error(`Error during registration: ${error.response.data.message}`);
     }
   }
 

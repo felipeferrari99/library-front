@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const NewRent = () => {
   const [book, setBook] = useState(null);
@@ -28,8 +29,8 @@ const NewRent = () => {
     fetchBookData();
   }, [id]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       await libraryFetch.post(`/${id}/rent`, {
@@ -39,9 +40,10 @@ const NewRent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success('Book rented successfully!');
       navigate(`/myRents`);
     } catch (error) {
-      console.error('Error during book update:', error);
+      toast.error(`Error during rent: ${error.response.data.message}`);
     }
   };
 
@@ -63,7 +65,7 @@ const NewRent = () => {
       <div className="w-1/2 p-5 mt-10">
         <form onSubmit={handleSubmit}>
             <div className="mt-7 mb-5">
-              <FloatingLabel variant="filled" label="How many days do you want to rent this book for?" name='days' type="number" min={1} id="days" onChange={(e) => setDays(e.target.value)}/>
+              <FloatingLabel variant="filled" label="How many days do you want to rent this book for?" name='days' type="number" id="days" onChange={(e) => setDays(e.target.value)}/>
             </div>
             <Button children="Rent" />
         </form>

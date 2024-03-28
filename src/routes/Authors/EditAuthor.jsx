@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const EditAuthor = () => {
   const [author, setAuthor] = useState(null);
@@ -20,7 +21,7 @@ const EditAuthor = () => {
         const response = await libraryFetch.get(`/authors/${id}`)
         setAuthor(response.data.author[0]);
       } catch (error) {
-        console.error('Error fetching author data:', error);
+        toast.error(`Error fetching author data: ${error.response.data.message}`);
       } finally {
         setLoading(false);
       }
@@ -47,9 +48,10 @@ const EditAuthor = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           }});
+        toast.success('Author updated successfully!');
         navigate(`/authors/${id}`);
     } catch (error) {
-      console.error('Error during author update:', error);
+      toast.error(`Error during author update: ${error.response.data.message}`);
     }
   };
 

@@ -6,6 +6,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
@@ -35,7 +36,7 @@ export default function ViewBook() {
       const data = response.data
       setBook(data);
     } catch (error) {
-      console.log(error)
+      toast.error(`Error fetching book data: ${error.response.data.message}`);
     }
   }
 
@@ -47,9 +48,10 @@ export default function ViewBook() {
       }
       await libraryFetch.delete(`/books/${id}`);
       delete libraryFetch.defaults.headers.common["Authorization"];
+      toast.success('Book deleted!');
       navigate('/books');
     } catch (error) {
-      console.log(error);
+      toast.error(`Error deleting book: ${error.response.data.message}`);
     }
   };
 
@@ -61,9 +63,10 @@ export default function ViewBook() {
       }
       await libraryFetch.delete(`/books/${id}/comments/${commentId}`);
       delete libraryFetch.defaults.headers.common["Authorization"];
+      toast.success('Comment deleted!');
       getBook();
     } catch (error) {
-      console.log(error);
+      toast.error(`Error deleting comment: ${error.response.data.message}`);
     }
   };
 
@@ -75,9 +78,10 @@ export default function ViewBook() {
       }
       await libraryFetch.put(`/books/${id}/favorite/`);
       delete libraryFetch.defaults.headers.common["Authorization"];
+      toast.success('Favorite book changed!');
       getBook();
     } catch (error) {
-      console.log(error);
+      toast.error(`Error changing favorite: ${error.response.data.message}`);
     }
   };
 
@@ -93,11 +97,12 @@ export default function ViewBook() {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success(`Comment added!`);
       getBook();
       setBody('');
       setRating('');
     } catch (error) {
-      console.error('Error during book update:', error);
+      toast.error(`Error adding comment: ${error.response.data.message}`);
     }
   };
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 export default function ViewAuthor() {
   const [author, setAuthor] = useState(null);
@@ -24,7 +25,7 @@ export default function ViewAuthor() {
       setAuthor(data.author[0]);
       setBooks(data.books)
     } catch (error) {
-      console.log(error)
+      toast.error(`Error fetching author data: ${error.response.data.message}`);
     }
   }
 
@@ -36,9 +37,10 @@ export default function ViewAuthor() {
       }
       await libraryFetch.delete(`/authors/${id}`);
       delete libraryFetch.defaults.headers.common["Authorization"];
+      toast.success('Author deleted!');
       navigate('/authors');
     } catch (error) {
-      console.log(error);
+      toast.error(`Error deleting author: ${error.response.data.message}`);
     }
   };
 

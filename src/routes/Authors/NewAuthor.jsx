@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FloatingLabel, FileInput, Label } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const NewAuthor = () => {
   const [name, setName] = useState('');
@@ -27,9 +28,10 @@ const NewAuthor = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success('Author created successfully!');
       navigate('/authors');
     } catch (error) {
-      console.error('Error during author creation:', error);
+      toast.error(`Error during author creation: ${error.response.data.message}`);
     }
   };  
 

@@ -6,6 +6,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const EditBook = () => {
   const [book, setBook] = useState(null);
@@ -24,7 +25,7 @@ const EditBook = () => {
         const response = await libraryFetch.get(`/books/${id}`)
         setBook(response.data.book);
       } catch (error) {
-        console.error('Error fetching book data:', error);
+        toast.error(`Error fetching book data: ${error.response.data.message}`);
       } finally {
         setLoading(false);
       }
@@ -57,9 +58,10 @@ const EditBook = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           }});
+        toast.success('Book updated successfully!');
         navigate(`/books/${id}`);
     } catch (error) {
-      console.error('Error during book update:', error);
+      toast.error(`Error during book update: ${error.response.data.message}`);
     }
   };
 
@@ -87,7 +89,7 @@ const EditBook = () => {
           <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" defaultValue={releaseDate ? moment(releaseDate).format('yyyy-MM-DD') : ''} onChange={(e) => setReleaseDate(e.target.value)}/>
         </div>
         <div className="mb-5">
-          <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" min={0} id="qtyAvailable" value={qtyAvailable} onChange={(e) => setQtyAvailable(e.target.value)}/>
+          <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" value={qtyAvailable} onChange={(e) => setQtyAvailable(e.target.value)}/>
         </div>
         <Button children="Update Book" />
       </form>

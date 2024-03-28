@@ -1,6 +1,8 @@
 import NavbarComponent from './components/Navbar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css'
 
@@ -16,6 +18,14 @@ const App = () => {
       <div className="container">
         <Outlet context={[loginState, setLoginState]} />
       </div>
+      <ToastContainer
+      position="top-right"
+      autoClose={2000}
+      limit={3}
+      hideProgressBar={true}
+      newestOnTop={true}
+      closeOnClick
+      theme="dark" />
     </div>
   );
 };

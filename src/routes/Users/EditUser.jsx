@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const EditUser = () => {
   const [user, setUser] = useState(null);
@@ -25,7 +26,7 @@ const EditUser = () => {
         }})
         setUser(response.data.user[0]);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        toast.error(`Error fetching user data: ${error.response.data.message}`);
       } finally {
         setLoading(false);
       }
@@ -54,9 +55,10 @@ const EditUser = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           }});
+        toast.success('Updated successfully!');
         navigate(`/user/${id}`);
     } catch (error) {
-      console.error('Error during user update:', error);
+      toast.error(`Error during user update: ${error.response.data.message}`);
     }
   };
 

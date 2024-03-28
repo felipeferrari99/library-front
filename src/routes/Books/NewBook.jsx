@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { FloatingLabel, FileInput, Label } from 'flowbite-react';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
 
 const NewBook = () => {
   const [title, setTitle] = useState('');
@@ -34,9 +35,10 @@ const NewBook = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success('Book created successfully!');
       navigate('/books');
     } catch (error) {
-      console.error('Error during book creation:', error);
+      toast.error(`Error during book creation: ${error.response.data.message}`);
     }
   };  
 
@@ -63,7 +65,7 @@ const NewBook = () => {
           <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" onChange={(e) => setReleaseDate(e.target.value)}/>
         </div>
         <div className="mb-5">
-          <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" min={0} id="qtyAvailable" onChange={(e) => setQtyAvailable(e.target.value)}/>
+          <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" onChange={(e) => setQtyAvailable(e.target.value)}/>
         </div>
         <Button children="Create Book" />
       </form>
