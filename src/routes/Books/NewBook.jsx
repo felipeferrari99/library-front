@@ -1,7 +1,5 @@
-'use client';
-
 import libraryFetch from '../../axios/config';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { FloatingLabel, FileInput, Label } from 'flowbite-react';
@@ -17,9 +15,24 @@ const NewBook = () => {
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getToken = () => {
+      const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          if (decodedToken.type != 'admin') {
+            navigate('/books');
+          }
+        } else {
+          navigate('/books');
+        }
+    };
+    getToken();
+  });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('author', author);
@@ -27,7 +40,7 @@ const NewBook = () => {
     formData.append('description', description);
     formData.append('release_date', moment(releaseDate).format('YYYY-MM-DD'));
     formData.append('qty_available', qtyAvailable);
-  
+
     try {
       const token = localStorage.getItem('token');
       const response = await libraryFetch.post('/books', formData, {
@@ -40,7 +53,7 @@ const NewBook = () => {
     } catch (error) {
       toast.error(`Error during book creation: ${error.response.data.message}`);
     }
-  };  
+  };
 
   return (
     <div className="p-10 max-w-md mx-auto">
@@ -56,7 +69,7 @@ const NewBook = () => {
           <div className="mb-2 block">
               <Label className='text-white' htmlFor="image" value="Add Image" />
           </div>
-            <FileInput id="image" onChange={(e) => setImage(e.target.files[0])} />
+          <FileInput id="image" onChange={(e) => setImage(e.target.files[0])} />
         </div>
         <div className="mb-5">
           <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" onChange={(e) => setDescription(e.target.value)}/>

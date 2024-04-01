@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 const EditBook = () => {
   const [book, setBook] = useState(null);
   const { id } = useParams();
+  const [type, setType] = useState('');
   const [title, setTitle] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
   const [qtyAvailable, setQtyAvailable] = useState('');
@@ -22,6 +23,11 @@ const EditBook = () => {
   useEffect(() => {
     const fetchBookData = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          setType(decodedToken.type);
+        }
         const response = await libraryFetch.get(`/books/${id}`)
         setBook(response.data.book);
       } catch (error) {
@@ -71,29 +77,35 @@ const EditBook = () => {
 
   return (
     <div className="p-10 max-w-md mx-auto">
-      <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-5">
-          <FloatingLabel variant="filled" label="Book Title" name="title" type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+      {type != 'admin' ? (
+        navigate(`/books/${id}`)
+      ) : (
+        <div>
+        <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-5">
+            <FloatingLabel variant="filled" label="Book Title" name="title" type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+          </div>
+          <div className="mb-5">
+            <FloatingLabel variant="filled" label="Author Name" name="author" type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
+          </div>
+          <Link to={`/books/${id}/image`}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
+          </Link>
+          <div className="mb-5">
+            <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+          </div>
+          <div className="mb-5">
+            <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" defaultValue={releaseDate ? moment(releaseDate).format('yyyy-MM-DD') : ''} onChange={(e) => setReleaseDate(e.target.value)}/>
+          </div>
+          <div className="mb-5">
+            <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" value={qtyAvailable} onChange={(e) => setQtyAvailable(e.target.value)}/>
+          </div>
+          <Button children="Update Book" />
+        </form>
+        <a href={`/books/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
         </div>
-        <div className="mb-5">
-          <FloatingLabel variant="filled" label="Author Name" name="author" type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
-        </div>
-        <Link to={`/books/${id}/image`}>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
-        </Link>
-        <div className="mb-5">
-          <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
-        </div>
-        <div className="mb-5">
-          <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" defaultValue={releaseDate ? moment(releaseDate).format('yyyy-MM-DD') : ''} onChange={(e) => setReleaseDate(e.target.value)}/>
-        </div>
-        <div className="mb-5">
-          <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" value={qtyAvailable} onChange={(e) => setQtyAvailable(e.target.value)}/>
-        </div>
-        <Button children="Update Book" />
-      </form>
-      <a href={`/books/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
+      )}
     </div>
   );
 };

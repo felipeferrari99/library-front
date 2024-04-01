@@ -43,6 +43,15 @@ const MyRents = () => {
     getRents();
   }, []);
 
+  useEffect(() => {
+    if (rents && rents.length > 0) {
+      const lateRents = rents.filter((rent) => rent.status === 'late');
+      if (lateRents.length > 0) {
+        toast.error(`You have ${lateRents.length} rent(s) late!`)
+      }
+    }
+  }, [rents]);
+
   if (!rents) {
     return <div>No rents found!</div>;
   }
@@ -89,9 +98,7 @@ const MyRents = () => {
               <td className="border px-4 py-2">{rent.status}</td>
               {rent.status !== 'returned' && (
                 <td className="border px-4 py-2">
-                  <Button onClick={() => returnBook(rent.id)} gradientMonochrome="purple" className="w-full">
-                    Return Book
-                  </Button>
+                  <Button onClick={() => returnBook(rent.id)} gradientMonochrome="purple" className="w-full" children='Return Book' />
                 </td>
               )}
             </tr>

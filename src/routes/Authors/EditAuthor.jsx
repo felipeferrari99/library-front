@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 const EditAuthor = () => {
   const [author, setAuthor] = useState(null);
   const { id } = useParams();
+  const [type, setType] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,11 @@ const EditAuthor = () => {
   useEffect(() => {
     const fetchAuthorData = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          setType(decodedToken.type);
+        }
         const response = await libraryFetch.get(`/authors/${id}`)
         setAuthor(response.data.author[0]);
       } catch (error) {
@@ -61,6 +67,10 @@ const EditAuthor = () => {
 
   return (
     <div className="p-10 max-w-md mx-auto">
+      {type != 'admin' ? (
+        navigate(`/authors/${id}`)
+      ) : (
+      <div>
       <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
@@ -75,6 +85,8 @@ const EditAuthor = () => {
         <Button children="Update Author" />
       </form>
       <a href={`/authors/${id}`} className="block mt-5 text-blue-500 hover:text-blue-700">Cancel</a>
+      </div>
+      )}
     </div>
   );
 };

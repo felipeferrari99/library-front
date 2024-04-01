@@ -1,7 +1,7 @@
 'use client';
 
 import libraryFetch from '../../axios/config';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FloatingLabel, FileInput, Label } from 'flowbite-react';
 import Button from '../../components/Button';
@@ -12,6 +12,21 @@ const NewAuthor = () => {
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getToken = () => {
+      const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          if (decodedToken.type != 'admin') {
+            navigate('/authors');
+          }
+        } else {
+          navigate('/authors');
+        }
+    };
+    getToken();
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
-import { FloatingLabel } from 'flowbite-react';
+import { FloatingLabel, Modal } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
@@ -15,6 +16,7 @@ export default function ViewBook() {
   const [userId, setUserId] = useState('');
   const [body, setBody] = useState('');
   const [rating, setRating] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -132,9 +134,24 @@ export default function ViewBook() {
                 <Link to={`/books/${id}/edit`}>
                   <Button children="Edit Book" />
                 </Link>
-                <button onClick={() => deleteBook(id)} className="p-2 pl-4 pr-4 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                <button onClick={() => setOpenModal(true)} className="p-2 pl-4 pr-4 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
                   Delete Book
                 </button>
+                <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                  <Modal.Header className="bg-gray-900" />
+                  <Modal.Body className="bg-gray-900">
+                    <div className="text-center">
+                      <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                      <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
+                        Are you sure you want to delete this book?
+                      </h3>
+                      <div className="flex justify-center gap-4">
+                        <button onClick={() => deleteBook(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Book</button>
+                        <Button children='Cancel' onClick={() => setOpenModal(false)} />
+                      </div>
+                    </div>
+                  </Modal.Body>
+                </Modal>
               </div>
             )}
            {type == 'user' && (
@@ -183,9 +200,26 @@ export default function ViewBook() {
                   <p className="text-xl mb-2">{comment.rating}</p>
                   <p className="mb-2">{comment.body}</p>
                   {userId == comment.user && (
-                    <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                    <div>
+                    <button onClick={() => setOpenModal(true)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
                       Delete Comment
                     </button>
+                    <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                      <Modal.Header className="bg-gray-900" />
+                      <Modal.Body className="bg-gray-900">
+                        <div className="text-center">
+                          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                          <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
+                            Are you sure you want to delete this comment?
+                          </h3>
+                          <div className="flex justify-center gap-4">
+                            <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Comment</button>
+                            <Button children='Cancel' onClick={() => setOpenModal(false)} />
+                          </div>
+                        </div>
+                      </Modal.Body>
+                    </Modal>
+                    </div>
                   )}
                 </div>
               ))

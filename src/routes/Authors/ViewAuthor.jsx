@@ -5,11 +5,14 @@ import libraryFetch from "../../axios/config";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
+import { Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function ViewAuthor() {
   const [author, setAuthor] = useState(null);
   const [books, setBooks] = useState(null);
   const [type, setType] = useState('');
+  const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -81,7 +84,22 @@ export default function ViewAuthor() {
               <Link to={`/authors/${id}/edit`}>
                 <Button children="Edit Author" />
             </Link>
-            <button onClick={() => deleteAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
+            <button onClick={() => setOpenModal(true)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
+            <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+              <Modal.Header className="bg-gray-900" />
+              <Modal.Body className="bg-gray-900">
+                <div className="text-center">
+                  <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                  <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
+                    Are you sure you want to delete this author?
+                  </h3>
+                  <div className="flex justify-center gap-4">
+                    <button onClick={() => deleteAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
+                    <Button children='Cancel' onClick={() => setOpenModal(false)} />
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
           </div>
         )}
         <a href="/authors" className="block mt-5 text-blue-500 hover:text-blue-700 text-center">Other Authors</a>
