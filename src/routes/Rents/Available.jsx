@@ -37,7 +37,7 @@ export default function Available() {
           ))
         )}
       </div>
-      <style jsx>{`.book-image-30 {width: 75%; height: auto;}`}</style>
+      <style jsx="true">{`.book-image-30 {width: 75%; height: auto;}`}</style>
     </div>
   )
 }

@@ -42,7 +42,7 @@ export default function Books() {
           ))
         )}
       </div>
-      <style jsx>{`.book-image {width: 75%; height: auto;}`}</style>
+      <style jsx="true">{`.book-image {width: 75%; height: auto;}`}</style>
     </div>
   );
 }

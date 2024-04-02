@@ -71,9 +71,9 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
         <img src="/Icon.png" className="mr-3 h-6 sm:h-9" />
         <span className="self-center whitespace-nowrap text-xl">Dream Bookshelf</span>
       </Navbar.Brand>
-      <div className="flex flex-row md:order-3 items-center">
-        <Navbar.Toggle className="ml-2" />
+      <Navbar.Toggle className='ml-28' />
         {isLoggedIn && (
+          <div className="flex md:order-2">
           <Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img={image} rounded />}>
             <Dropdown.Header>
               <span className="block text-sm">{username}</span>
@@ -83,8 +83,8 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
             <Dropdown.Divider />
             <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
           </Dropdown>
+          </div>
         )}
-      </div>
       <Navbar.Collapse>
         {isLoggedIn && !isAdmin && (
           <>
@@ -110,10 +110,10 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
           </>
         )}
         {!isLoggedIn && (
-          <div className="md:flex md:justify-end md:order-3">
-            <Navbar.Link className="text-white mr-2 md:mr-4" href="/register">Register</Navbar.Link>
+          <>
+            <Navbar.Link className="text-white" href="/register">Register</Navbar.Link>
             <Navbar.Link className="text-white" href="/login">Login</Navbar.Link>
-          </div>
+          </>
         )}
       </Navbar.Collapse>
     </Navbar>

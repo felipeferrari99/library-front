@@ -8,6 +8,7 @@ import { FloatingLabel, Modal } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import Stars from 'react-stars';
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
@@ -15,7 +16,7 @@ export default function ViewBook() {
   const [favorite, setFavorite] = useState('');
   const [userId, setUserId] = useState('');
   const [body, setBody] = useState('');
-  const [rating, setRating] = useState(null);
+  const [starRating, setStarRating] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ export default function ViewBook() {
       const token = localStorage.getItem('token');
       await libraryFetch.post(`books/${id}/comments`, {
         body: body,
-        rating: rating
+        rating: starRating,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -102,7 +103,7 @@ export default function ViewBook() {
       toast.success(`Comment added!`);
       getBook();
       setBody('');
-      setRating('');
+      setStarRating(1);
     } catch (error) {
       toast.error(`Error adding comment: ${error.response.data.message}`);
     }
@@ -179,9 +180,17 @@ export default function ViewBook() {
         </div>
         {type === 'user' && (
           <div className="max-w-md mx-auto mb-5">
-            <h3 className="text-xl mb-4">Leave a comment!</h3>
+            <h3 className="text-xl">Leave a comment!</h3>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-              <FloatingLabel className="rounded-lg" variant="filled" label="Rating" name="rating" type="number" id="rating" value={rating}  onChange={(e) => setRating(e.target.value)}/>
+              <Stars
+                count={5}
+                value={starRating || 1}
+                onChange={setStarRating}
+                size={30}
+                color2={'#ffd700'}
+                color1={'#a9a9a9'}
+                half={false}
+              />
               <FloatingLabel className="rounded-lg" variant="filled" label="Comment" name="body" type="text" id="body" value={body} onChange={(e) => setBody(e.target.value)}/>
               <Button children="Post" />
             </form>
@@ -197,29 +206,19 @@ export default function ViewBook() {
                   <Link to={`/user/${comment.user}`}>
                     <h4 className="block text-blue-500 hover:text-blue-700">{comment.username}</h4>
                     </Link>
-                  <p className="text-xl mb-2">{comment.rating}</p>
+                    <Stars
+                    count={5}
+                    value={comment.rating}
+                    size={20}
+                    color2={'#ffd700'}
+                    color1={'#a9a9a9'}
+                    edit={false}
+                  />
                   <p className="mb-2">{comment.body}</p>
                   {userId == comment.user && (
-                    <div>
-                    <button onClick={() => setOpenModal(true)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                    <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
                       Delete Comment
                     </button>
-                    <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
-                      <Modal.Header className="bg-gray-900" />
-                      <Modal.Body className="bg-gray-900">
-                        <div className="text-center">
-                          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                          <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
-                            Are you sure you want to delete this comment?
-                          </h3>
-                          <div className="flex justify-center gap-4">
-                            <button onClick={() => deleteComment(comment.id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Comment</button>
-                            <Button children='Cancel' onClick={() => setOpenModal(false)} />
-                          </div>
-                        </div>
-                      </Modal.Body>
-                    </Modal>
-                    </div>
                   )}
                 </div>
               ))

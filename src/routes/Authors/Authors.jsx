@@ -38,7 +38,7 @@ export default function Authors() {
           ))
         )}
       </div>
-      <style jsx>{`.author-image {width: 55%; height: auto;}`}</style>
+      <style jsx="true">{`.author-image {width: 55%; height: auto;}`}</style>
     </div>
   )
 }

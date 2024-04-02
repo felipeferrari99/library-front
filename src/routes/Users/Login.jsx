@@ -47,9 +47,9 @@ const Login = () => {
           <div className="grid grid-flow-col mt-5 justify-stretch space-x-4">
               <FloatingLabel variant="filled" label="Password" name='password' type={showPassword?'text':'password'} id="password" onChange={(e) => setPassword(e.target.value)}/>
           </div>
-          <div class="flex items-center mb-4">
-              <input onClick={()=>setShowPassword(!showPassword)} id="link-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-              <label for="link-checkbox" class="ms-2 text-gray-300">Show password?</label>
+          <div className="flex items-center mb-4">
+              <input onClick={()=>setShowPassword(!showPassword)} id="link-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              <label htmlFor="link-checkbox" className="ms-2 text-gray-300">Show password?</label>
           </div>
           <Button children='Login' />
       </form>
