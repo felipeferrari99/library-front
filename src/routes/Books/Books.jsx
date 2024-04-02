@@ -21,8 +21,8 @@ export default function Books() {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-5xl text-center my-10">BOOKS</h1>
+    <div className="p-12">
+      <h1 className="text-5xl text-center mb-10">BOOKS</h1>
       <div className="flex flex-wrap justify-between">
         {books.length === 0 ? (
           <p className="text-center text-gray-500">No books found!</p>

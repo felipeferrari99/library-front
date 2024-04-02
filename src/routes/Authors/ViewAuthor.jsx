@@ -52,7 +52,7 @@ export default function ViewAuthor() {
   }, [id]);
 
   return (
-    <div>
+    <div className="p-10">
     {author === null ? (
       <p>Loading...</p>
     ) : (

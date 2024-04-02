@@ -32,7 +32,7 @@ const AllRents = () => {
   const filteredRents = rents.filter((rent) => statusFilter === 'all' || rent.status === statusFilter);
 
   return (
-    <div>
+    <div className="p-8">
       <h2 className="text-2xl font-bold mb-4">All Rents</h2>
       <div className="flex items-center">
         <button onClick={() => setStatusFilter('all')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">

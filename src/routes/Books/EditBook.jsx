@@ -2,9 +2,9 @@
 
 import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import { FloatingLabel } from 'flowbite-react';
+import { FloatingLabel, FileInput, Modal } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 
@@ -17,7 +17,9 @@ const EditBook = () => {
   const [qtyAvailable, setQtyAvailable] = useState('');
   const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,17 +73,52 @@ const EditBook = () => {
     }
   };
 
+  const handleImageSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('image', image);
+    try {
+      const token = localStorage.getItem('token');
+      await libraryFetch.put(`/books/${id}/image`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error('Error during book update:', error);
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div className="p-10 max-w-md mx-auto">
+    <div className="p-8 max-w-md mx-auto">
       {type != 'admin' ? (
         navigate(`/books/${id}`)
       ) : (
         <div>
         <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
+        <button onClick={() => setOpenModal(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
+          <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+            <Modal.Header className="bg-gray-900" />
+            <Modal.Body className="bg-gray-900">
+              <div className="text-center">
+                <h2 className='mb-3'>Current image for: {book.title}</h2>
+                <img style={{ marginLeft: '4rem', width: '15rem', height: '20rem' }} src={book.image} alt={book.title}/>
+                <form onSubmit={handleImageSubmit}>
+                  <FileInput className='mt-5 mb-5' id="image" onChange={(e) => setImage(e.target.files[0])} />
+                  <div className="flex justify-center gap-4">
+                    <Button type="submit" children="Update" />
+                    <Button children='Cancel' onClick={() => setOpenModal(false)} />
+                  </div>
+                </form>
+              </div>
+            </Modal.Body>
+          </Modal>
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <FloatingLabel variant="filled" label="Book Title" name="title" type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
@@ -89,9 +126,6 @@ const EditBook = () => {
           <div className="mb-5">
             <FloatingLabel variant="filled" label="Author Name" name="author" type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
           </div>
-          <Link to={`/books/${id}/image`}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
-          </Link>
           <div className="mb-5">
             <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
           </div>

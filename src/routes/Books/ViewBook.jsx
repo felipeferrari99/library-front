@@ -113,7 +113,7 @@ export default function ViewBook() {
   }, [id]);
 
   return (
-    <div className="flex justify-between max-w-5xl mx-auto">
+    <div className="flex justify-between p-10 max-w-5xl mx-auto">
       <div className="w-1/2 p-5">
         {book === null ? (
           <p>Loading...</p>

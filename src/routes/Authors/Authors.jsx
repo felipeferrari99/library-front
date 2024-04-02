@@ -20,8 +20,8 @@ export default function Authors() {
   }, []);
 
   return (
-    <div>
-       <h1 className="text-5xl text-center my-10">AUTHORS</h1>
+    <div className="p-12">
+       <h1 className="text-5xl text-center mb-10">AUTHORS</h1>
        <div className="flex flex-wrap justify-between">
         {authors.length === 0 ? (
           <p className="text-center text-gray-500">No authors found!</p>

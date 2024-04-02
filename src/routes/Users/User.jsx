@@ -47,7 +47,7 @@ export default function User() {
   }, [id]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col p-8 items-center">
       {user === null ? (
         <p>Loading...</p>
       ) : (

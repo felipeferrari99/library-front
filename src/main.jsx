@@ -11,16 +11,13 @@ import Books from './routes/Books/Books.jsx'
 import NewBook from './routes/Books/NewBook.jsx'
 import ViewBook from './routes/Books/ViewBook.jsx'
 import EditBook from './routes/Books/EditBook.jsx'
-import ChangeBookImage from './routes/Books/ChangeBookImage.jsx'
 import ViewAuthor from './routes/Authors/ViewAuthor.jsx'
 import Authors from './routes/Authors/Authors.jsx'
-import ChangeAuthorImage from './routes/Authors/ChangeAuthorImage.jsx'
 import EditAuthor from './routes/Authors/EditAuthor.jsx'
 import Register from './routes/Users/Register.jsx'
 import NewAuthor from './routes/Authors/NewAuthor.jsx'
 import User from './routes/Users/User.jsx'
 import EditUser from './routes/Users/EditUser.jsx'
-import ChangeUserImage from './routes/Users/ChangeUserImage.jsx'
 import Available from './routes/Rents/Available.jsx'
 import NewRent from './routes/Rents/NewRent.jsx'
 import AllRents from './routes/Rents/AllRents.jsx'
@@ -59,10 +56,6 @@ const router = createBrowserRouter([
         element: <EditBook />
       },
       {
-        path: "/books/:id/image",
-        element: <ChangeBookImage />
-      },
-      {
         path: "/authors/:id",
         element: <ViewAuthor />
       },
@@ -75,10 +68,6 @@ const router = createBrowserRouter([
         element: <Authors />
       },
       {
-        path: "/authors/:id/image",
-        element: <ChangeAuthorImage />
-      },
-      {
         path: "/authors/:id/edit",
         element: <EditAuthor />
       },
@@ -89,10 +78,6 @@ const router = createBrowserRouter([
       {
         path: "/user/:id/edit",
         element: <EditUser />
-      },
-      {
-        path: "/user/:id/image",
-        element: <ChangeUserImage />
       },
       {
         path: "/available",
