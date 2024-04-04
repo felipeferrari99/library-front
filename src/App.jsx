@@ -17,7 +17,7 @@ const App = () => {
         <Outlet context={[loginState, setLoginState]} />
       </div>
       <ToastContainer
-      position="top-right"
+      position="bottom-right"
       autoClose={2000}
       limit={3}
       hideProgressBar={true}

@@ -67,8 +67,8 @@ const AllRents = () => {
                 <td className="border px-4 py-2">{rent.id}</td>
                 <td className="border px-4 py-2">{rent.username}</td>
                 <td className="border px-4 py-2">{rent.title}</td>
-                <td className="border px-4 py-2">{moment(rent.date_rented).format('DD/MM/YYYY')}</td>
-                <td className="border px-4 py-2">{moment(rent.date_for_return).format('DD/MM/YYYY')}</td>
+                <td className="border px-4 py-2">{moment.utc(rent.date_rented).format('DD/MM/YYYY')}</td>
+                <td className="border px-4 py-2">{moment.utc(rent.date_for_return).format('DD/MM/YYYY')}</td>
                 <td className="border px-4 py-2">{rent.status}</td>
               </tr>
             ))}

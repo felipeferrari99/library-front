@@ -38,7 +38,7 @@ const NewBook = () => {
     formData.append('author', author);
     formData.append('image', image);
     formData.append('description', description);
-    formData.append('release_date', moment(releaseDate).format('YYYY-MM-DD'));
+    formData.append('release_date', moment.utc(releaseDate).format('YYYY-MM-DD'));
     formData.append('qty_available', qtyAvailable);
 
     try {
@@ -75,7 +75,7 @@ const NewBook = () => {
           <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" onChange={(e) => setDescription(e.target.value)}/>
         </div>
         <div className="mb-5">
-          <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" onChange={(e) => setReleaseDate(e.target.value)}/>
+          <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" max={new Date().toISOString().split("T")[0]} onChange={(e) => setReleaseDate(e.target.value)}/>
         </div>
         <div className="mb-5">
           <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" onChange={(e) => setQtyAvailable(e.target.value)}/>

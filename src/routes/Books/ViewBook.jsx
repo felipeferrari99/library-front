@@ -88,6 +88,14 @@ export default function ViewBook() {
     }
   };
 
+  const unloggedFavorite = () => {
+    toast.error('Log in to add this book to your favorites!')
+  }
+
+  const unloggedRent = () => {
+    toast.error('Log in to rent this book!')
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -126,7 +134,7 @@ export default function ViewBook() {
               <h3 className="text-xl mb-5">{book.book.authorName}</h3>
             </Link>
             <p className="text-lg mb-5">{book.book.description}</p>
-            <p className="text-lg">Released: {moment(book.book.release_date).format("DD/MM/YYYY")}</p>
+            <p className="text-lg">Released: {moment.utc(book.book.release_date).format("DD/MM/YYYY")}</p>
             {type === 'admin' && (
               <p className="text-md mt-2">Quantity available: {book.book.qty_available}</p>
             )}
@@ -164,10 +172,18 @@ export default function ViewBook() {
                     <Button onClick={() => changeFavorite(id)} children="&#9734; Favorite!" />
                 )}
                 {book != null && book.book.qty_available > 0 && (
-                    <Link to={`/newRent/${id}`}>
+                    <Link to={`/newrent/${id}`}>
                       <Button children="Rent Book" />
                     </Link>
                 )}
+              </div>
+            )}
+            {!type && (
+              <div className="mt-5 flex flex-col md:flex-row md:justify-start gap-2">
+                  <Button onClick={unloggedFavorite} children="&#9734; Favorite!" />
+                  {book != null && book.book.qty_available > 0 && (
+                  <Button onClick={unloggedRent} children="Rent Book" />
+                  )}
               </div>
             )}
             <a href="/books" className="mt-5 block text-blue-500 hover:text-blue-700">All Books</a>
@@ -178,6 +194,9 @@ export default function ViewBook() {
         <div className="mb-5">
           <h2 className="text-3xl mb-2">Comments</h2>
         </div>
+        {!type && (
+          <h3 className="text-xl mb-5"><a href='/login' className="text-blue-500 hover:text-blue-700">Log in</a> to leave a comment!</h3>
+        )}
         {type === 'user' && (
           <div className="max-w-md mx-auto mb-5">
             <h3 className="text-xl">Leave a comment!</h3>

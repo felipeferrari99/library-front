@@ -60,7 +60,7 @@ const EditBook = () => {
           title: title,
           author: author,
           description: description,
-          release_date: moment(releaseDate).format('YYYY-MM-DD'),
+          release_date: moment.utc(releaseDate).format('YYYY-MM-DD'),
           qty_available: qtyAvailable
         }, {
           headers: {
@@ -130,7 +130,7 @@ const EditBook = () => {
             <FloatingLabel variant="filled" label="Description" name="description" type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
           </div>
           <div className="mb-5">
-            <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" defaultValue={releaseDate ? moment(releaseDate).format('yyyy-MM-DD') : ''} onChange={(e) => setReleaseDate(e.target.value)}/>
+            <FloatingLabel variant="filled" label="Release Date" name='releaseDate' type="date" id="releaseDate" max={new Date().toISOString().split("T")[0]} defaultValue={releaseDate ? moment.utc(releaseDate).format('yyyy-MM-DD') : ''} onChange={(e) => setReleaseDate(e.target.value)}/>
           </div>
           <div className="mb-5">
             <FloatingLabel variant="filled" label="Quantity Available" name='qtyAvailable' type="number" id="qtyAvailable" value={qtyAvailable} onChange={(e) => setQtyAvailable(e.target.value)}/>

@@ -41,7 +41,7 @@ const NewRent = () => {
         },
       });
       toast.success('Book rented successfully!');
-      navigate(`/myRents`);
+      navigate(`/myrents`);
     } catch (error) {
       toast.error(`Error during rent: ${error.response.data.message}`);
     }

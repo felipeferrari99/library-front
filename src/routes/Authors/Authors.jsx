@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 export default function Authors() {
   const [authors, setAuthors] = useState([]);
+  const [type, setType] = useState(null);
 
   const getAuthors = async () => {
     try {
@@ -14,6 +16,17 @@ export default function Authors() {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    const getToken = () => {
+      const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          setType(decodedToken.type);
+        } 
+    };
+    getToken();
+  });
 
   useEffect(() => {
     getAuthors();
@@ -36,6 +49,13 @@ export default function Authors() {
               </Link>
             </div>
           ))
+        )}
+      </div>
+      <div className="text-center">
+        {type === 'admin' && (
+          <Link to='/newauthor'>
+            <Button children="Create Author" />
+          </Link>
         )}
       </div>
       <style jsx="true">{`.author-image {width: 55%; height: auto;}`}</style>

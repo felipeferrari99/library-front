@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import libraryFetch from "../../axios/config";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 import "flowbite-react";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
+  const [type, setType] = useState(null);
 
   const getBooks = async () => {
     try {
@@ -17,14 +19,25 @@ export default function Books() {
   };
 
   useEffect(() => {
+    const getToken = () => {
+      const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          setType(decodedToken.type);
+        } 
+    };
+    getToken();
+  });
+
+  useEffect(() => {
     getBooks();
   }, []);
 
   return (
     <div className="p-12">
-      <h1 className="text-5xl text-center mb-10">BOOKS</h1>
+      <h1 className="text-5xl text-center mb-10 mx-auto">BOOKS</h1>
       <div className="flex flex-wrap justify-between">
-        {books.length === 0 ? (
+        {books.length === 0? (
           <p className="text-center text-gray-500">No books found!</p>
         ) : (
           books.map((book) => (
@@ -40,6 +53,13 @@ export default function Books() {
               </Link>
             </div>
           ))
+        )}
+      </div>
+      <div className="text-center">
+        {type === 'admin' && (
+          <Link to='/newbook'>
+            <Button children="Create Book" />
+          </Link>
         )}
       </div>
       <style jsx="true">{`.book-image {width: 75%; height: auto;}`}</style>

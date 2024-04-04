@@ -68,12 +68,12 @@ export default function ViewAuthor() {
         {books.length === 0 ? (
           <p className="text-center text-gray-500">No books found!</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7">
             {books.map((book) => (
-              <div key={book.id} className="flex flex-col items-center">
+              <div key={book.id} className="flex flex-col items-center mb-5">
                 <Link to={`/books/${book.id}`}>
-                  <img src={book.image} alt={book.title} className="w-60 h-90 object-cover mb-2" />
-                  <h2 className="text-2xl text-center">{book.title}</h2>
+                  <h2 className="text-xl text-center mb-2">{book.title}</h2>
+                  <img src={book.image} alt={book.title} style={{width: '65%', height: 'auto'}} className="mx-auto" />
                 </Link>
               </div>
             ))}

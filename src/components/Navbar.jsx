@@ -92,20 +92,20 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
             <Navbar.Link className="text-white" href="/authors">All Authors</Navbar.Link>
             <Dropdown inline label='Rents'>
               <Dropdown.Item href="/available">New Rent</Dropdown.Item>
-              <Dropdown.Item href="/myRents">My Rents</Dropdown.Item>
+              <Dropdown.Item href="/myrents">My Rents</Dropdown.Item>
             </Dropdown>
           </>
         )}
         {isLoggedIn && isAdmin && (
           <>
-            <Navbar.Link href="/allRents" className="text-white">All Rents</Navbar.Link>
+            <Navbar.Link href="/allrents" className="text-white">All Rents</Navbar.Link>
             <Dropdown inline label='Books'>
               <Dropdown.Item href="/books">All Books</Dropdown.Item>
-              <Dropdown.Item href="/newBook">New Book</Dropdown.Item>
+              <Dropdown.Item href="/newbook">New Book</Dropdown.Item>
             </Dropdown>
             <Dropdown inline label='Authors'>
               <Dropdown.Item href="/authors">All Authors</Dropdown.Item>
-              <Dropdown.Item href="/newAuthor">New Author</Dropdown.Item>
+              <Dropdown.Item href="/newauthor">New Author</Dropdown.Item>
             </Dropdown>
           </>
         )}
