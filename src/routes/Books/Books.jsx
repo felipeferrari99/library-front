@@ -35,7 +35,7 @@ export default function Books() {
 
   return (
     <div className="p-12">
-      <h1 className="text-5xl text-center mb-10 mx-auto">BOOKS</h1>
+      <h1 className="text-5xl text-center mb-2 mx-auto">BOOKS</h1>
       <div className="flex flex-wrap justify-between">
         {books.length === 0? (
           <p className="text-center text-gray-500">No books found!</p>
@@ -43,10 +43,10 @@ export default function Books() {
           books.map((book) => (
             <div className="w-full md:w-1/3 p-5 md:p-10 text-center mb-12 md:mb-0 cursor-pointer" key={book.id}>
               <Link to={`/books/${book.id}`} className="block">
-                <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
+                <h2 className="text-2xl font-bold mb-1">{book.title.slice(0, 30)}</h2>
               </Link>
               <Link to={`/authors/${book.author}`} className="block">
-                <p className="text-gray-500 mb-2">{book.authorName}</p>
+                <p className="text-gray-500 mb-2">{book.authorName.slice(0, 30)}</p>
               </Link>
               <Link to={`/books/${book.id}`}>
                 <img className="book-image mx-auto" src={book.image} alt={book.title} />
@@ -62,7 +62,7 @@ export default function Books() {
           </Link>
         )}
       </div>
-      <style jsx="true">{`.book-image {width: 75%; height: auto;}`}</style>
+      <style jsx="true">{`.book-image {width: 35vh; height: 53vh;}`}</style>
     </div>
   );
 }

@@ -42,7 +42,7 @@ export default function Authors() {
           authors.map((author) => (
             <div className="w-full md:w-1/3 p-5 md:p-10 text-center mb-12 md:mb-0 cursor-pointer" key={author.id}>
               <Link to={`/authors/${author.id}`} className="block">
-                <h2 className="text-2xl font-bold mb-2">{author.name}</h2>
+                <h2 className="text-2xl font-bold mb-2">{author.name.slice(0, 23)}</h2>
               </Link>
               <Link to={`/authors/${author.id}`}>
                 <img className="author-image mx-auto" src={author.image} alt={author.name}/>
@@ -58,7 +58,7 @@ export default function Authors() {
           </Link>
         )}
       </div>
-      <style jsx="true">{`.author-image {width: 55%; height: auto;}`}</style>
+      <style jsx="true">{`.author-image {width: 40vh; height: 40vh;}`}</style>
     </div>
   )
 }

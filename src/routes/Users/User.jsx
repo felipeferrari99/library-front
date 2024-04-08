@@ -7,9 +7,9 @@ import Button from '../../components/Button';
 
 function FavoriteBook({ book }) {
   return (
-    <div className="book text-center">
+    <div className="text-center">
       <Link to={`/books/${book.favorite_book}`}>
-        <h3 className="text-xl font-bold mb-2">{book.title}</h3>
+        <h3 className="text-xl font-bold mb-2">{book.title.slice(0, 30)}</h3>
         <img style={{ width: '10rem', height: '15rem' }} src={book.image} alt={book.title} />
       </Link>
     </div>

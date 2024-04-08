@@ -57,23 +57,19 @@ export default function ViewAuthor() {
       <p>Loading...</p>
     ) : (
       <div className="flex flex-col items-center">
-        <img
-          className="w-64 h-64"
-          src={author.image}
-          alt={author.name}
-        />
-        <h1 className="text-3xl text-center mt-5">{author.name}</h1>
+        <img className="w-64 h-64" src={author.image} alt={author.name}/>
+        <h1 className="text-3xl text-center mt-5">{author.name.slice(0, 60)}</h1>
         <p className="text-center max-w-xl mt-3">{author.description}</p>
-        <h2 className="text-2xl text-center mt-10">Books:</h2>
+        <h2 className="text-2xl text-center mt-7">BOOKS:</h2>
         {books.length === 0 ? (
           <p className="text-center text-gray-500">No books found!</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 mt-7">
             {books.map((book) => (
               <div key={book.id} className="flex flex-col items-center mb-5">
                 <Link to={`/books/${book.id}`}>
-                  <h2 className="text-xl text-center mb-2">{book.title}</h2>
-                  <img src={book.image} alt={book.title} style={{width: '65%', height: 'auto'}} className="mx-auto" />
+                  <h2 className="text-xl text-center mb-2">{book.title.slice(0, 30)}</h2>
+                  <img src={book.image} alt={book.title} style={{width: '28vh', height: '42vh'}} className="mx-auto" />
                 </Link>
               </div>
             ))}

@@ -103,12 +103,12 @@ const EditBook = () => {
         <div>
         <h2 className="text-2xl text-center font-semibold mb-6">Edit Book</h2>
         <button onClick={() => setOpenModal(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
-          <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+          <Modal className='mt-12 md:mt-0' dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
             <Modal.Header className="bg-gray-900" />
             <Modal.Body className="bg-gray-900">
               <div className="text-center">
                 <h2 className='mb-3'>Current image for: {book.title}</h2>
-                <img style={{ marginLeft: '4rem', width: '15rem', height: '20rem' }} src={book.image} alt={book.title}/>
+                <img className='mx-12 md:mx-16' style={{ width: '15rem', height: '20rem' }} src={book.image} alt={book.title}/>
                 <form onSubmit={handleImageSubmit}>
                   <FileInput className='mt-5 mb-5' id="image" onChange={(e) => setImage(e.target.files[0])} />
                   <div className="flex justify-center gap-4">

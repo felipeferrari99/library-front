@@ -16,7 +16,7 @@ const Home = () => {
         width: '100vw',
       }}
     >
-      <h1 className="text-3xl mt-10 mb-10 font-bold text-white">Welcome to Dream Bookshelf!</h1>
+      <h1 className="text-2xl md:text-3xl mt-10 mb-10 font-bold text-white">Welcome to Dream Bookshelf!</h1>
       <Link to={'/books'}>
         <Button
           children="View Books!"

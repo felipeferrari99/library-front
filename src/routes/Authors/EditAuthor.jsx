@@ -93,22 +93,22 @@ const EditAuthor = () => {
       <div>
       <h2 className="text-2xl text-center font-semibold mb-6">Edit Author</h2>
       <button onClick={() => setOpenModal(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Change Image</button>
-          <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
-            <Modal.Header className="bg-gray-900" />
-            <Modal.Body className="bg-gray-900">
-              <div className="text-center">
-                <h2 className='mb-3'>Current image for: {author.name}</h2>
-                <img style={{ marginLeft: '6rem', width: '12rem', height: '14rem' }} src={author.image} alt={author.name}/>
-                <form onSubmit={handleImageSubmit}>
-                  <FileInput className='mt-5 mb-5' id="image" onChange={(e) => setImage(e.target.files[0])} />
-                  <div className="flex justify-center gap-4">
-                    <Button type="submit" children="Update" />
-                    <Button children='Cancel' onClick={() => setOpenModal(false)} />
-                  </div>
-                </form>
-              </div>
-            </Modal.Body>
-          </Modal>
+        <Modal className='mt-12 md:mt-0' dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+          <Modal.Header className="bg-gray-900" />
+          <Modal.Body className="bg-gray-900">
+            <div className="text-center">
+              <h2 className='mb-3'>Current image for: {author.name}</h2>
+              <img style={{ width: '12rem', height: '14rem' }} className="mx-auto mr-18 md:mr-13" src={author.image} alt={author.name}/>
+              <form onSubmit={handleImageSubmit}>
+                <FileInput className='mt-5 mb-5' id="image" onChange={(e) => setImage(e.target.files[0])} />
+                <div className="flex justify-center gap-4">
+                  <Button type="submit" children="Update" />
+                  <Button children='Cancel' onClick={() => setOpenModal(false)} />
+                </div>
+              </form>
+            </div>
+          </Modal.Body>
+        </Modal>
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
           <FloatingLabel variant="filled" label="Author Name" name="name" type="text" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
