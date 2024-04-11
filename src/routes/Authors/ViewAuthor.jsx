@@ -1,7 +1,5 @@
-'use client';
-
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
+import { getAuthor, deleteAuthor } from "../../requests/authors";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
@@ -16,30 +14,24 @@ export default function ViewAuthor() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const getAuthor = async () => {
+  const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setType(decodedToken.type)
       }
-      const response = await libraryFetch.get(`/authors/${id}`)
-      const data = response.data
-      setAuthor(data.author[0]);
-      setBooks(data.books)
+      const response = await getAuthor(id)
+      setAuthor(response.author[0]);
+      setBooks(response.books)
     } catch (error) {
-      toast.error(`Error fetching author data: ${error.response.data.message}`);
+      toast.error(`Error fetching author data: ${error.response}`);
     }
   }
 
-  const deleteAuthor = async (id) => {
+  const removeAuthor = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        libraryFetch.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      }
-      await libraryFetch.delete(`/authors/${id}`);
-      delete libraryFetch.defaults.headers.common["Authorization"];
+      await deleteAuthor(id);
       toast.success('Author deleted!');
       navigate('/authors');
     } catch (error) {
@@ -48,7 +40,7 @@ export default function ViewAuthor() {
   };
 
   useEffect(() => {
-    getAuthor();
+    fetchData();
   }, [id]);
 
   return (
@@ -90,7 +82,7 @@ export default function ViewAuthor() {
                     Are you sure you want to delete this author?
                   </h3>
                   <div className="flex justify-center gap-4">
-                    <button onClick={() => deleteAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
+                    <button onClick={() => removeAuthor(id)} className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">Delete Author</button>
                     <Button children='Cancel' onClick={() => setOpenModal(false)} />
                   </div>
                 </div>

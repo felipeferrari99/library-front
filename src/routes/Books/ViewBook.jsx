@@ -1,7 +1,7 @@
-'use client';
-
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
+import { getBook, deleteBook } from '../../requests/books';
+import { newComment, deleteComment } from "../../requests/comments";
+import { getUser, alterFavorite } from '../../requests/users';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import { FloatingLabel, Modal } from 'flowbite-react';
@@ -21,36 +21,26 @@ export default function ViewBook() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const getBook = async () => {
+  const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setUserId(decodedToken.userId);
         setType(decodedToken.type);
-        const userResponse = await libraryFetch.get(`/user/${decodedToken.userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-        }})
-        const userData = userResponse.data;
+        const userData = await getUser(decodedToken.userId);
         setFavorite(userData.user[0].favorite_book);
       }
-      const response = await libraryFetch.get(`/books/${id}`)
-      const data = response.data
-      setBook(data);
+      const response = await getBook(id)
+      setBook(response)
     } catch (error) {
-      toast.error(`Error fetching book data: ${error.response.data.message}`);
+      toast.error(`Error fetching author data: ${error.response.data.message}`);
     }
   }
 
-  const deleteBook = async (id) => {
+  const removeBook = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        libraryFetch.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      }
-      await libraryFetch.delete(`/books/${id}`);
-      delete libraryFetch.defaults.headers.common["Authorization"];
+      await deleteBook(id);
       toast.success('Book deleted!');
       navigate('/books');
     } catch (error) {
@@ -58,16 +48,11 @@ export default function ViewBook() {
     }
   };
 
-  const deleteComment = async (commentId) => {
+  const removeComment = async (commentId) => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        libraryFetch.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      }
-      await libraryFetch.delete(`/books/${id}/comments/${commentId}`);
-      delete libraryFetch.defaults.headers.common["Authorization"];
+      await deleteComment(id, commentId);
       toast.success('Comment deleted!');
-      getBook();
+      fetchData();
     } catch (error) {
       toast.error(`Error deleting comment: ${error.response.data.message}`);
     }
@@ -75,16 +60,11 @@ export default function ViewBook() {
 
   const changeFavorite = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        libraryFetch.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      }
-      await libraryFetch.put(`/books/${id}/favorite/`);
-      delete libraryFetch.defaults.headers.common["Authorization"];
+      await alterFavorite(id);
       toast.success('Favorite book changed!');
-      getBook();
+      fetchData();
     } catch (error) {
-      toast.error(`Error changing favorite: ${error.response.data.message}`);
+      toast.error(`Error changing favorite: ${error.message}`);
     }
   };
 
@@ -99,17 +79,9 @@ export default function ViewBook() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.post(`books/${id}/comments`, {
-        body: body,
-        rating: starRating,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await newComment(id, body, starRating)
       toast.success(`Comment added!`);
-      getBook();
+      fetchData();
       setBody('');
       setStarRating(1);
     } catch (error) {
@@ -118,7 +90,7 @@ export default function ViewBook() {
   };
 
   useEffect(() => {
-    getBook();
+    fetchData();
   }, [id]);
 
   return (
@@ -160,15 +132,10 @@ export default function ViewBook() {
                         Are you sure you want to delete this book?
                       </h3>
                       <div className="flex justify-center gap-4">
-                        <button onClick={() => deleteBook(book.book.id)} className="p-2 pl-4 pr-4 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
+                        <button onClick={() => removeBook(book.book.id)} className="p-2 pl-4 pr-4 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300">
                           Delete Book
                         </button>
-                        <Button
-                          color="gray"
-                          onClick={() => setOpenModal(false)}
-                        >
-                          Cancel
-                        </Button>
+                        <Button onClick={() => setOpenModal(false)} children='Cancel' />
                       </div>
                     </div>
                   </Modal.Body>
@@ -178,45 +145,23 @@ export default function ViewBook() {
             {type == "user" && (
               <div className="mt-5 flex flex-col md:flex-row md:justify-start gap-2">
                 {favorite == book.book.id && (
-                  <Button
-                    onClick={() => changeFavorite(book.book.id)}
-                    color="pink"
-                    className="w-full md:w-auto"
-                  >
-                    &#9733; Unfavorite
-                  </Button>
+                  <Button onClick={() => changeFavorite(book.book.id)} children='&#9733; Unfavorite' />
                 )}
                 {favorite != book.book.id && (
-                  <Button
-                    onClick={() => changeFavorite(book.book.id)}
-                    color="pink"
-                    className="w-full md:w-auto"
-                  >
-                    &#9734; Favorite
-                  </Button>
+                  <Button onClick={() => changeFavorite(book.book.id)} children='&#9734; Favorite' />
                 )}
                 {book != null && book.book.qty_available > 0 && (
                   <Link to={`/newrent/${book.book.id}`}>
-                    <Button color="green" className="w-full md:w-auto">
-                      Rent Book
-                    </Button>
+                    <Button children='Rent Book' />
                   </Link>
                 )}
               </div>
             )}
             {!type && (
               <div className="mt-5 flex flex-col md:flex-row md:justify-start gap-2">
-                <Button
-                  onClick={() => changeFavorite(book.book.id)}
-                  color="pink"
-                  className="w-full md:w-auto"
-                >
-                  &#9734; Favorite
-                </Button>
+                <Button onClick={() => unloggedFavorite()} children='&#9734; Favorite' />
                 {book != null && book.book.qty_available > 0 && (
-                  <Button color="green" className="w-full md:w-auto">
-                    Rent Book
-                  </Button>
+                  <Button onClick={() => unloggedRent()} children='Rent Book' />
                 )}
               </div>
             )}
@@ -230,13 +175,7 @@ export default function ViewBook() {
         </div>
         {!type && (
           <h3 className="text-xl mb-5">
-            <a
-              href="/login"
-              className="text-blue-500 hover:text-blue-700"
-            >
-              Log in
-            </a>{" "}
-            to leave a comment!
+            <a href="/login" className="text-blue-500 hover:text-blue-700">Log in</a>{" "}to leave a comment!
           </h3>
         )}
         {type === "user" && (
@@ -262,9 +201,7 @@ export default function ViewBook() {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
               />
-              <Button color="pink" className="w-full">
-                Post
-              </Button>
+              <Button children='Post' />
             </form>
           </div>
         )}
@@ -293,7 +230,7 @@ export default function ViewBook() {
                   <p className="mb-2">{comment.body}</p>
                   {userId == comment.user && (
                     <button
-                      onClick={() => deleteComment(comment.id)}
+                      onClick={() => removeComment(comment.id)}
                       className="p-2 rounded-2xl max-w-xs bg-white text-gray-800 border border-white hover:bg-red-700 hover:text-white transition-colors duration-300"
                     >
                       Delete Comment

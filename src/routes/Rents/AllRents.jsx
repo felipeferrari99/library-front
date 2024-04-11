@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { getAllRents } from "../../requests/rents";
 
 const AllRents = () => {
   const [rents, setRents] = useState(null);
   const [statusFilter, setStatusFilter] = useState('active');
 
   const getRents = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await libraryFetch.get(`/allRents`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = response.data;
-      setRents(data);
+      const response = await getAllRents();
+      setRents(response);
     } catch (error) {
       toast.error(`Error getting rents: ${error.response.data.message}`);
     }

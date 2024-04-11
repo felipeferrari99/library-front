@@ -1,35 +1,25 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
 import moment from 'moment';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
+import { getMyRents, returnBook } from "../../requests/rents";
 
 const MyRents = () => {
   const [rents, setRents] = useState(null);
   const [statusFilter, setStatusFilter] = useState('active');
 
   const getRents = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await libraryFetch.get(`/myRents`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = response.data;
-      setRents(data);
+      const response = await getMyRents()
+      setRents(response);
     } catch (error) {
       toast.error(`Error getting rents: ${error.response.data.message}`);
     }
   };
 
-  const returnBook = async (id) => {
+  const ReturnBook = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        libraryFetch.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      }
-      await libraryFetch.post(`/return/${id}`);
+      await returnBook(id)
       setRents((prevRents) =>
         prevRents.map((rent) => (rent.id === id ? { ...rent, status: "returned" } : rent))
       );
@@ -98,7 +88,7 @@ const MyRents = () => {
               <td className="border md:px-4 md:py-2">{rent.status}</td>
               {rent.status !== 'returned' && (
                 <td className="border md:px-4 md:py-2">
-                  <Button onClick={() => returnBook(rent.id)} children='Return Book' />
+                  <Button onClick={() => ReturnBook(rent.id)} children='Return Book' />
                 </td>
               )}
             </tr>

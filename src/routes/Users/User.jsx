@@ -1,7 +1,5 @@
-'use client';
-
 import { Link, useParams } from 'react-router-dom';
-import libraryFetch from '../../axios/config';
+import { getUser } from '../../requests/users';
 import { useState, useEffect } from 'react';
 import Button from '../../components/Button';
 
@@ -22,29 +20,19 @@ export default function User() {
   const [userId, setUserId] = useState('');
   const { id } = useParams();
 
-  const getUser = async () => {
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    try {
-      const response = await libraryFetch.get(`/user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const fetchData = async () => {
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setUserId(decodedToken.userId);
       }
-      const data = response.data;
+      const data = await getUser(id);
       setUser(data.user[0]);
       setBook(data.book);
-    } catch (error) {
-      console.log(error);
     }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, [id]);
+    fetchData();
+  })
 
   return (
     <div className="flex flex-col p-8 items-center">

@@ -1,11 +1,10 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
+import { getBook } from '../../requests/books';
+import { newRent } from '../../requests/rents';
 
 const NewRent = () => {
   const [book, setBook] = useState(null);
@@ -17,8 +16,8 @@ const NewRent = () => {
   useEffect(() => {
     const fetchBookData = async () => {
       try {
-        const response = await libraryFetch.get(`/books/${id}`)
-        setBook(response.data.book);
+        const response = await getBook(id);
+        setBook(response.book);
       } catch (error) {
         console.error('Error fetching book data:', error);
       } finally {
@@ -29,17 +28,10 @@ const NewRent = () => {
     fetchBookData();
   }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.post(`/${id}/rent`, {
-        daysRented: days
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await newRent(id, days)
       toast.success('Book rented successfully!');
       navigate(`/myrents`);
     } catch (error) {
@@ -73,12 +65,10 @@ const NewRent = () => {
               id="days"
               className="rounded-lg"
               value={days}
-              onChange={(e) => setDays(e.target.value)}
+              onChange={(event) => setDays(event.target.value)}
             />
           </div>
-          <Button color="green" className="w-full">
-            Rent
-          </Button>
+          <Button children='Rent' />
         </form>
       </div>
     </div>

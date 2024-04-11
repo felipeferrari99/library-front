@@ -1,22 +1,21 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
+import { getBooks } from '../../requests/rents';
 import { Link } from "react-router-dom";
 
 export default function Available() {
   const [books, setBooks] = useState([]);
 
-  const getBooks = async () => {
+  const fetchData = async () => {
     try {
-      const response = await libraryFetch.get("/available")
-      const data = response.data
-      setBooks(data);
+      const response = await getBooks()
+      setBooks(response);
     } catch (error) {
       console.log(error)
     }
   }
 
   useEffect(() => {
-    getBooks();
+    fetchData();
   }, []);
 
   return (

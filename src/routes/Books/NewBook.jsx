@@ -1,4 +1,4 @@
-import libraryFetch from '../../axios/config';
+import { newBook } from '../../requests/books';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -40,14 +40,8 @@ const NewBook = () => {
     formData.append('description', description);
     formData.append('release_date', moment.utc(releaseDate).format('YYYY-MM-DD'));
     formData.append('qty_available', qtyAvailable);
-
     try {
-      const token = localStorage.getItem('token');
-      const response = await libraryFetch.post('/books', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await newBook(formData)
       toast.success('Book created successfully!');
       navigate('/books');
     } catch (error) {

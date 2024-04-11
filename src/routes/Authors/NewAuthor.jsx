@@ -1,11 +1,9 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FloatingLabel, FileInput, Label } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
+import { newAuthor } from '../../requests/authors';
 
 const NewAuthor = () => {
   const [name, setName] = useState('');
@@ -37,12 +35,7 @@ const NewAuthor = () => {
     formData.append('description', description);
   
     try {
-      const token = localStorage.getItem('token');
-      const response = await libraryFetch.post('/authors', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await newAuthor(formData)
       toast.success('Author created successfully!');
       navigate('/authors');
     } catch (error) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
+import { getAuthors } from "../../requests/authors";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 
@@ -7,11 +7,10 @@ export default function Authors() {
   const [authors, setAuthors] = useState([]);
   const [type, setType] = useState(null);
 
-  const getAuthors = async () => {
+  const fetchData = async () => {
     try {
-      const response = await libraryFetch.get("/authors")
-      const data = response.data
-      setAuthors(data);
+      const response = await getAuthors()
+      setAuthors(response);
     } catch (error) {
       console.log(error)
     }
@@ -29,7 +28,7 @@ export default function Authors() {
   });
 
   useEffect(() => {
-    getAuthors();
+    fetchData();
   }, []);
 
   return (

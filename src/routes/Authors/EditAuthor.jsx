@@ -1,6 +1,4 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
+import { getAuthor, updateAuthor, changeImage } from '../../requests/authors';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FloatingLabel, FileInput, Modal } from 'flowbite-react';
@@ -26,8 +24,8 @@ const EditAuthor = () => {
           const decodedToken = JSON.parse(atob(token.split('.')[1]));
           setType(decodedToken.type);
         }
-        const response = await libraryFetch.get(`/authors/${id}`)
-        setAuthor(response.data.author[0]);
+        const response = await getAuthor(id)
+        setAuthor(response.author[0]);
       } catch (error) {
         toast.error(`Error fetching author data: ${error.response.data.message}`);
       } finally {
@@ -48,14 +46,7 @@ const EditAuthor = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const token = localStorage.getItem('token');
-        await libraryFetch.put(`/authors/${id}`, {
-          name: name,
-          description: description
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }});
+        await updateAuthor(id, name, description)
         toast.success('Author updated successfully!');
         navigate(`/authors/${id}`);
     } catch (error) {
@@ -69,12 +60,7 @@ const EditAuthor = () => {
     formData.append('name', name);
     formData.append('image', image);
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.put(`/authors/${id}/image`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await changeImage(id, formData);
       window.location.reload();
     } catch (error) {
       console.error('Error during author update:', error);

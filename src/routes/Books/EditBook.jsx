@@ -1,6 +1,4 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
+import { getBook, updateBook, changeImage } from '../../requests/books';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -30,10 +28,10 @@ const EditBook = () => {
           const decodedToken = JSON.parse(atob(token.split('.')[1]));
           setType(decodedToken.type);
         }
-        const response = await libraryFetch.get(`/books/${id}`)
-        setBook(response.data.book);
+        const response = await getBook(id);
+        setBook(response.book);
       } catch (error) {
-        toast.error(`Error fetching book data: ${error.response.data.message}`);
+        toast.error(`Error fetching book data: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -45,7 +43,7 @@ const EditBook = () => {
   useEffect(() => {
     if (book) {
       setTitle(book.title);
-      setReleaseDate(book.release_date || '');
+      setReleaseDate(book.release_date);
       setQtyAvailable(book.qty_available);
       setAuthor(book.authorName);
       setDescription(book.description);
@@ -55,36 +53,22 @@ const EditBook = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const token = localStorage.getItem('token');
-        const response = await libraryFetch.put(`/books/${id}`, {
-          title: title,
-          author: author,
-          description: description,
-          release_date: moment.utc(releaseDate).format('YYYY-MM-DD'),
-          qty_available: qtyAvailable
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }});
+        await updateBook(id, title, author, description, moment.utc(releaseDate).format('YYYY-MM-DD'), qtyAvailable)
         toast.success('Book updated successfully!');
         navigate(`/books/${id}`);
     } catch (error) {
-      toast.error(`Error during book update: ${error.response.data.message}`);
+      toast.error(`Error during book update: ${error.message}`);
     }
   };
 
   const handleImageSubmit = async (event) => {
     event.preventDefault();
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('image', image);
     try {
-      const token = localStorage.getItem('token');
-      await libraryFetch.put(`/books/${id}/image`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await changeImage(id, formData)
       window.location.reload();
     } catch (error) {
       console.error('Error during book update:', error);

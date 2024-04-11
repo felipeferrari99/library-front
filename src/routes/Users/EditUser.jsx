@@ -1,6 +1,4 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
+import { getUser, updateUser, changeImage } from '../../requests/users';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import { FloatingLabel, FileInput, Modal } from 'flowbite-react';
@@ -22,26 +20,23 @@ const EditUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUser = async () => {
-      const token = localStorage.getItem('token');
+    const getUserData = async () => {
       try {
-        const response = await libraryFetch.get(`/user/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-        }})
+        const token = localStorage.getItem('token');
         if (token) {
           const decodedToken = JSON.parse(atob(token.split('.')[1]));
           setUserId(decodedToken.userId);
         }
-        setUser(response.data.user[0]);
+        const response = await getUser(id);
+        setUser(response.user[0]);
       } catch (error) {
-        toast.error(`Error fetching user data: ${error.response.data.message}`);
+        toast.error(`Error fetching user data: ${error.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    getUser();
+    getUserData();
   }, [id]);
 
   useEffect(() => {
@@ -55,15 +50,7 @@ const EditUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const token = localStorage.getItem('token');
-        await libraryFetch.put(`/user/${id}`, {
-          email: email,
-          password: password,
-          description: description
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }});
+        await updateUser(id, email, password, description)
         toast.success('Updated successfully!');
         navigate(`/user/${id}`);
     } catch (error) {
@@ -73,17 +60,13 @@ const EditUser = () => {
 
   const handleImageSubmit = async (event) => {
     event.preventDefault();
+
     const formData = new FormData();
     formData.append('username', username);
     formData.append('image', image);
     try {
-      const oldToken = localStorage.getItem('token');
-      const response = await libraryFetch.put(`/user/${id}/image`, formData, {
-        headers: {
-          Authorization: `Bearer ${oldToken}`,
-        },
-      });
-      const { token } = response.data;
+      const response = await changeImage(id, formData);
+      const { token } = response;
       localStorage.removeItem('token');
       localStorage.setItem('token', token);
       const decodedToken = JSON.parse(atob(token.split('.')[1]));

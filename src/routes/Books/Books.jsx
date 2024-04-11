@@ -1,22 +1,20 @@
 import { useState, useEffect } from "react";
-import libraryFetch from "../../axios/config";
 import { Link } from "react-router-dom";
+import { getBooks } from '../../requests/books';
 import Button from "../../components/Button";
-import "flowbite-react";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
   const [type, setType] = useState(null);
 
-  const getBooks = async () => {
+  const fetchData = async () => {
     try {
-      const response = await libraryFetch.get("/books");
-      const data = response.data;
-      setBooks(data);
+      const response = await getBooks()
+      setBooks(response);
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
     const getToken = () => {
@@ -30,7 +28,7 @@ export default function Books() {
   });
 
   useEffect(() => {
-    getBooks();
+    fetchData();
   }, []);
 
   return (

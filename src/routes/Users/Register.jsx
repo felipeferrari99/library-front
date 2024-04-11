@@ -1,6 +1,5 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
+import libraryAPI from '../../axios/config';
+import { registerRequest } from '../../requests/users';
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
@@ -23,13 +22,9 @@ const Register = () => {
       return;
     }
     try {
-      const response = await libraryFetch.post('/register', {
-        username: username,
-        email: email,
-        password: password
-      }); 
+      const response = await registerRequest(username, email, password)
       
-      const { token } = response.data;
+      const { token } = response;
 
       localStorage.setItem('token', token);
 
@@ -38,6 +33,7 @@ const Register = () => {
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId, username: username });
 
       toast.success('Registered successfully!');
+      libraryAPI.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       navigate('/books');
     } catch (error) {
       toast.error(`Error during registration: ${error.response.data.message}`);

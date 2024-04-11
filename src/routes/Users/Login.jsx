@@ -1,8 +1,7 @@
-'use client';
-
-import libraryFetch from '../../axios/config';
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
+import libraryAPI from '../../axios/config';
+import { loginRequest } from '../../requests/users';
+import { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FloatingLabel } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
@@ -18,19 +17,18 @@ const Login = () => {
   const login = async (e) => {
     e.preventDefault();
     try {
-      const response = await libraryFetch.post('/login', {
-        username: username,
-        password: password
-      });
+      const response = await loginRequest(username, password)
 
-      const { token } = response.data;
+      const { token } = response;
 
       localStorage.setItem('token', token);
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
 
-      toast.success('Logged in successfully!');
       setLoginState({ isLoggedIn: true, isAdmin: decodedToken.type === 'admin', image: decodedToken.image, id: decodedToken.userId, username: username });
+      
+      toast.success('Logged in successfully!');
+      libraryAPI.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       navigate('/books');
     } catch (error) {
       toast.error(`Error during login: ${error.response.data.message}`);

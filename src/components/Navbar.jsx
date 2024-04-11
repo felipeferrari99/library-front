@@ -1,4 +1,4 @@
-'use client';
+import libraryAPI from '../axios/config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
@@ -56,6 +56,7 @@ const NavbarComponent = ({ loginState, setLoginState, eventBus }) => {
         setId(decodedToken.userId);
         setImage(decodedToken.image);
         setUsername(decodedToken.username)
+        libraryAPI.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       } catch (err) {
         logout();
       }
