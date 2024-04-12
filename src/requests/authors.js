@@ -1,8 +1,8 @@
 import libraryAPI from "../axios/config";
 
-export const getAuthors = async () => {
+export const getAuthors = async (search) => {
     try {
-      const response = await libraryAPI.get("/authors");
+      const response = await libraryAPI.get("/authors", { params: { search } });
       return response.data;
     } catch (error) {
       console.log(error);

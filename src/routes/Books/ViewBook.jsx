@@ -4,7 +4,7 @@ import { newComment, deleteComment } from "../../requests/comments";
 import { getUser, alterFavorite } from '../../requests/users';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import moment from 'moment';
-import { FloatingLabel, Modal } from 'flowbite-react';
+import { FloatingLabel, Modal, Pagination } from 'flowbite-react';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -12,11 +12,15 @@ import Stars from 'react-stars';
 
 export default function ViewBook() {
   const [book, setBook] = useState(null);
+  const [comments, setComments] = useState([]);
   const [type, setType] = useState('');
   const [favorite, setFavorite] = useState('');
   const [userId, setUserId] = useState('');
   const [body, setBody] = useState('');
   const [starRating, setStarRating] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const onPageChange = (page) => setCurrentPage(page);
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,6 +37,8 @@ export default function ViewBook() {
       }
       const response = await getBook(id)
       setBook(response)
+      setComments(response.comments)
+      setTotalPages(Math.ceil(response.comments.length / 3));
     } catch (error) {
       toast.error(`Error fetching author data: ${error.response.data.message}`);
     }
@@ -52,6 +58,10 @@ export default function ViewBook() {
     try {
       await deleteComment(id, commentId);
       toast.success('Comment deleted!');
+      console.log(currentComments.length)
+      if (currentComments.length === 1) {
+        setCurrentPage(currentPage - 1)
+      }
       fetchData();
     } catch (error) {
       toast.error(`Error deleting comment: ${error.response.data.message}`);
@@ -93,6 +103,9 @@ export default function ViewBook() {
     fetchData();
   }, [id]);
 
+  const indexOfLastComment = currentPage * 3;
+  const indexOfFirstComment = indexOfLastComment - 3;
+  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
   return (
     <div className="flex flex-col lg:flex-row justify-between p-10 max-w-5xl mx-auto">
       <div className="w-full lg:w-1/2 p-5">
@@ -212,7 +225,7 @@ export default function ViewBook() {
             {book.comments.length === 0 ? (
               <p className="comment">No comments for this book yet!</p>
             ) : (
-              book.comments.map((comment) => (
+              currentComments.map((comment) => (
                 <div className="border rounded-md p-2" key={comment.id}>
                   <Link to={`/user/${comment.user}`}>
                     <h4 className="block text-blue-500 hover:text-blue-700">
@@ -237,7 +250,18 @@ export default function ViewBook() {
                     </button>
                   )}
                 </div>
+                
               ))
+            )}
+            {comments.length > 3 && (
+              <Pagination
+                layout="pagination"
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={onPageChange}
+                previousLabel="Back"
+                showIcons
+              />
             )}
           </div>
         )}

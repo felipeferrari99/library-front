@@ -1,8 +1,8 @@
 import libraryAPI from "../axios/config";
 
-export const getBooks = async () => {
+export const getBooks = async (search) => {
     try {
-      const response = await libraryAPI.get("/books");
+      const response = await libraryAPI.get("/books", { params: { search } });
       return response.data;
     } catch (error) {
       console.log(error);
