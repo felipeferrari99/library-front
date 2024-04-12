@@ -58,7 +58,6 @@ export default function ViewBook() {
     try {
       await deleteComment(id, commentId);
       toast.success('Comment deleted!');
-      console.log(currentComments.length)
       if (currentComments.length === 1) {
         setCurrentPage(currentPage - 1)
       }
